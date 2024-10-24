@@ -1,8 +1,51 @@
-[project]
+[tool.poetry]
 name = "codexify-api"
-author = "Sid Mohan"
 version = "0.1.0"
-description = "Codexify API"
+description = "semantic search platform"
+authors = ["Sid Mohan <sid@datafog.ai>"]
+license = "MIT"
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = []
+packages = [
+    { include = "src" }
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fast-vector-similarity = "*"
+aioredis = "*"
+aioredlock = "*"
+aiosqlite = "*"
+apscheduler = "*"
+faiss-cpu = "*"
+fastapi = "*"
+faster-whisper = "*"
+filelock = "*"
+httpx = "*"
+llama-cpp-python = "*"
+magika = "*"
+mutagen = "*"
+nvgpu = "*"
+pandas = "*"
+pillow = "*"
+psutil = "*"
+pydantic = "*"
+PyPDF2 = "*"
+pytest = "*"
+python-multipart = "*"
+pytz = "*"
+redis = "*"
+rq = "*"
+ruff = "*"
+scipy = "*"
+scikit-learn = "*"
+sqlalchemy = "*"
+textract-py3 = "*"
+uvicorn = "*"
+uvloop = "*"
+zstandard = "*"
+greenlet = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

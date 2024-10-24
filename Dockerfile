@@ -38,11 +38,9 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install wheel
 
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
-# Install dependencies using uv
-RUN uv pip install -r requirements.txt
+#
+# Install dependencies using pip
+RUN pip install -r requirements.txt
 
 # Now copy the rest of the application into the container
 COPY . .
