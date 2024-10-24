@@ -1,0 +1,10 @@
+import os
+
+CODEXIFY_API_SERVER_LISTEN_PORT = int(os.environ.get("CODEXIFY_API_SERVER_LISTEN_PORT", 8080))
+UVICORN_NUMBER_OF_WORKERS = int(os.environ.get("UVICORN_NUMBER_OF_WORKERS", 3))
+
+option = {
+    "host": "0.0.0.0",
+    "port": CODEXIFY_API_SERVER_LISTEN_PORT,
+    "workers": UVICORN_NUMBER_OF_WORKERS
+}
