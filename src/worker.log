@@ -1,0 +1,999 @@
+2024-10-24 16:25:21,556 - main - INFO - Starting application initialization
+2024-10-24 16:25:21,557 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:25:21,564 - db - INFO - Database initialization completed.
+2024-10-24 16:25:21,575 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010771 seconds, for an average of 0.0004487916666666666 seconds per hash.
+2024-10-24 16:25:21,575 - functions - INFO - Checking models directory...
+2024-10-24 16:25:21,575 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:25:21,575 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:25:21,576 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:25:21,576 - functions - INFO - Model downloads completed.
+2024-10-24 16:25:21,582 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:25:21,583 - main - INFO - Application initialization complete
+2024-10-24 16:25:46,165 - main - INFO - Attempting to enqueue job with ID: 48859dea68188bf2388c35dd6c6d6d4d
+2024-10-24 16:25:46,169 - main - ERROR - Failed to queue model download: cannot pickle '_thread.lock' object
+2024-10-24 16:25:46,171 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 263, in add_new_model
+    job = model_worker.model_queue.enqueue(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 971, in enqueue
+    return self.enqueue_call(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 719, in enqueue_call
+    return self.enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1094, in enqueue_job
+    return self._enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1122, in _enqueue_job
+    job.save(pipeline=pipe)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1087, in save
+    mapping = self.to_dict(include_meta=include_meta, include_result=include_result)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1011, in to_dict
+    'data': zlib.compress(self.data),
+                          ^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 506, in data
+    self._data = self.serializer.dumps(job_tuple)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot pickle '_thread.lock' object
+
+2024-10-24 16:25:57,625 - main - INFO - Attempting to enqueue job with ID: 7e574f764bd7b0e8b9cfd0efff4397aa
+2024-10-24 16:25:57,628 - main - ERROR - Failed to queue model download: cannot pickle '_thread.lock' object
+2024-10-24 16:25:57,629 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 263, in add_new_model
+    job = model_worker.model_queue.enqueue(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 971, in enqueue
+    return self.enqueue_call(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 719, in enqueue_call
+    return self.enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1094, in enqueue_job
+    return self._enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1122, in _enqueue_job
+    job.save(pipeline=pipe)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1087, in save
+    mapping = self.to_dict(include_meta=include_meta, include_result=include_result)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1011, in to_dict
+    'data': zlib.compress(self.data),
+                          ^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 506, in data
+    self._data = self.serializer.dumps(job_tuple)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot pickle '_thread.lock' object
+
+2024-10-24 16:26:05,787 - main - INFO - Application shutdown initiated
+2024-10-24 16:26:15,112 - main - INFO - Starting application initialization
+2024-10-24 16:26:15,113 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:26:15,117 - db - INFO - Database initialization completed.
+2024-10-24 16:26:15,127 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010404 seconds, for an average of 0.0004335 seconds per hash.
+2024-10-24 16:26:15,127 - functions - INFO - Checking models directory...
+2024-10-24 16:26:15,128 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:26:15,128 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:26:15,128 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:26:15,128 - functions - INFO - Model downloads completed.
+2024-10-24 16:26:15,134 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:26:15,135 - main - INFO - Application initialization complete
+2024-10-24 16:26:20,161 - main - INFO - Attempting to enqueue job with ID: 131118d4a472497e16556a232d216976
+2024-10-24 16:26:20,168 - main - ERROR - Failed to queue model download: cannot pickle '_thread.lock' object
+2024-10-24 16:26:20,172 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 263, in add_new_model
+    job = model_worker.model_queue.enqueue(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 971, in enqueue
+    return self.enqueue_call(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 719, in enqueue_call
+    return self.enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1094, in enqueue_job
+    return self._enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1122, in _enqueue_job
+    job.save(pipeline=pipe)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1087, in save
+    mapping = self.to_dict(include_meta=include_meta, include_result=include_result)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1011, in to_dict
+    'data': zlib.compress(self.data),
+                          ^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 506, in data
+    self._data = self.serializer.dumps(job_tuple)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot pickle '_thread.lock' object
+
+2024-10-24 16:26:29,324 - main - INFO - Attempting to enqueue job with ID: 62470906e6e227de8dbdacdf500d8509
+2024-10-24 16:26:29,331 - main - ERROR - Failed to queue model download: cannot pickle '_thread.lock' object
+2024-10-24 16:26:29,332 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 263, in add_new_model
+    job = model_worker.model_queue.enqueue(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 971, in enqueue
+    return self.enqueue_call(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 719, in enqueue_call
+    return self.enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1094, in enqueue_job
+    return self._enqueue_job(job, pipeline=pipeline, at_front=at_front)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/queue.py", line 1122, in _enqueue_job
+    job.save(pipeline=pipe)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1087, in save
+    mapping = self.to_dict(include_meta=include_meta, include_result=include_result)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1011, in to_dict
+    'data': zlib.compress(self.data),
+                          ^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 506, in data
+    self._data = self.serializer.dumps(job_tuple)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot pickle '_thread.lock' object
+
+2024-10-24 16:27:03,273 - main - INFO - Application shutdown initiated
+2024-10-24 16:27:04,968 - main - INFO - Starting application initialization
+2024-10-24 16:27:04,969 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:27:04,974 - db - INFO - Database initialization completed.
+2024-10-24 16:27:04,985 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010167 seconds, for an average of 0.000423625 seconds per hash.
+2024-10-24 16:27:04,985 - functions - INFO - Checking models directory...
+2024-10-24 16:27:04,985 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:27:04,985 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:27:04,986 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:27:04,986 - functions - INFO - Model downloads completed.
+2024-10-24 16:27:04,992 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:27:04,993 - main - INFO - Application initialization complete
+2024-10-24 16:27:13,069 - main - INFO - Attempting to enqueue job with ID: 885cc1e60cd0ac731e545e2b1aee5f70
+2024-10-24 16:27:13,075 - main - INFO - Job enqueued successfully. Job ID: 885cc1e60cd0ac731e545e2b1aee5f70
+2024-10-24 16:28:56,712 - main - INFO - Application shutdown initiated
+2024-10-24 16:28:58,607 - main - INFO - Starting application initialization
+2024-10-24 16:28:58,608 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:28:58,613 - db - INFO - Database initialization completed.
+2024-10-24 16:28:58,624 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010403 seconds, for an average of 0.0004334583333333334 seconds per hash.
+2024-10-24 16:28:58,624 - functions - INFO - Checking models directory...
+2024-10-24 16:28:58,624 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:28:58,624 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:28:58,624 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:28:58,624 - functions - INFO - Model downloads completed.
+2024-10-24 16:28:58,630 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:28:58,632 - main - INFO - Application initialization complete
+2024-10-24 16:29:10,812 - main - INFO - Application shutdown initiated
+2024-10-24 16:29:13,210 - main - INFO - Starting application initialization
+2024-10-24 16:29:13,211 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:29:13,217 - db - INFO - Database initialization completed.
+2024-10-24 16:29:13,230 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.013057 seconds, for an average of 0.0005440416666666666 seconds per hash.
+2024-10-24 16:29:13,231 - functions - INFO - Checking models directory...
+2024-10-24 16:29:13,231 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:29:13,231 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:29:13,231 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:29:13,231 - functions - INFO - Model downloads completed.
+2024-10-24 16:29:13,239 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:29:13,240 - main - INFO - Application initialization complete
+2024-10-24 16:29:43,239 - main - INFO - Attempting to enqueue job with ID: bc8961503bcf29d383a1a91d8326ae95
+2024-10-24 16:29:43,255 - main - INFO - Job enqueued successfully. Job ID: bc8961503bcf29d383a1a91d8326ae95
+2024-10-24 16:29:43,255 - main - ERROR - Failed to queue model download: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+2024-10-24 16:29:43,260 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 279, in add_new_model
+    enqueued_job = Job.fetch(unique_id, connection=model_worker.redis_conn)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 591, in fetch
+    job.refresh()
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 991, in refresh
+    data = self.connection.hgetall(self.key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/commands/core.py", line 4978, in hgetall
+    return self.execute_command("HGETALL", name, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 559, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 567, in _execute_command
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/retry.py", line 62, in call_with_retry
+    return do()
+           ^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 568, in <lambda>
+    lambda: self._send_command_parse_response(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 542, in _send_command_parse_response
+    return self.parse_response(conn, command_name, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 584, in parse_response
+    response = connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/connection.py", line 592, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 60, in _read_response
+    self._read_response(disable_decoding=disable_decoding)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 67, in _read_response
+    response = self.encoder.decode(response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/encoders.py", line 43, in decode
+    value = value.decode(self.encoding, self.encoding_errors)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+
+2024-10-24 16:30:06,621 - main - INFO - Attempting to enqueue job with ID: 388718df391cc6200f22a036abb52ca5
+2024-10-24 16:30:06,633 - main - INFO - Job enqueued successfully. Job ID: 388718df391cc6200f22a036abb52ca5
+2024-10-24 16:30:06,633 - main - ERROR - Failed to queue model download: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+2024-10-24 16:30:06,634 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 279, in add_new_model
+    enqueued_job = Job.fetch(unique_id, connection=model_worker.redis_conn)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 591, in fetch
+    job.refresh()
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 991, in refresh
+    data = self.connection.hgetall(self.key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/commands/core.py", line 4978, in hgetall
+    return self.execute_command("HGETALL", name, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 559, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 567, in _execute_command
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/retry.py", line 62, in call_with_retry
+    return do()
+           ^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 568, in <lambda>
+    lambda: self._send_command_parse_response(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 542, in _send_command_parse_response
+    return self.parse_response(conn, command_name, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 584, in parse_response
+    response = connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/connection.py", line 592, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 60, in _read_response
+    self._read_response(disable_decoding=disable_decoding)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 67, in _read_response
+    response = self.encoder.decode(response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/encoders.py", line 43, in decode
+    value = value.decode(self.encoding, self.encoding_errors)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+
+2024-10-24 16:30:44,301 - main - INFO - Application shutdown initiated
+2024-10-24 16:30:46,040 - main - INFO - Starting application initialization
+2024-10-24 16:30:46,043 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:30:46,048 - db - INFO - Database initialization completed.
+2024-10-24 16:30:46,058 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010432 seconds, for an average of 0.0004346666666666667 seconds per hash.
+2024-10-24 16:30:46,059 - functions - INFO - Checking models directory...
+2024-10-24 16:30:46,059 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:30:46,059 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:30:46,059 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:30:46,059 - functions - INFO - Model downloads completed.
+2024-10-24 16:30:46,065 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:30:46,067 - main - INFO - Application initialization complete
+2024-10-24 16:30:57,628 - main - INFO - Attempting to enqueue job with ID: c7450c34e6f57d55709e163b9d2e4406
+2024-10-24 16:30:57,638 - main - INFO - Job enqueued successfully. Job ID: c7450c34e6f57d55709e163b9d2e4406
+2024-10-24 16:30:57,639 - main - ERROR - Failed to fetch job: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+2024-10-24 16:30:57,639 - main - ERROR - Failed to queue model download: 500: Failed to fetch job after enqueueing: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+2024-10-24 16:30:57,643 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 280, in add_new_model
+    enqueued_job = Job.fetch(unique_id, connection=model_worker.redis_conn)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 591, in fetch
+    job.refresh()
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 991, in refresh
+    data = self.connection.hgetall(self.key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/commands/core.py", line 4978, in hgetall
+    return self.execute_command("HGETALL", name, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 559, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 567, in _execute_command
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/retry.py", line 62, in call_with_retry
+    return do()
+           ^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 568, in <lambda>
+    lambda: self._send_command_parse_response(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 542, in _send_command_parse_response
+    return self.parse_response(conn, command_name, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 584, in parse_response
+    response = connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/connection.py", line 592, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 60, in _read_response
+    self._read_response(disable_decoding=disable_decoding)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 67, in _read_response
+    response = self.encoder.decode(response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/encoders.py", line 43, in decode
+    value = value.decode(self.encoding, self.encoding_errors)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 283, in add_new_model
+    raise HTTPException(status_code=500, detail=f"Failed to fetch job after enqueueing: {str(e)}")
+fastapi.exceptions.HTTPException: 500: Failed to fetch job after enqueueing: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+
+2024-10-24 16:31:10,895 - main - INFO - Application shutdown initiated
+2024-10-24 16:31:12,972 - main - INFO - Starting application initialization
+2024-10-24 16:31:12,974 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:31:12,979 - db - INFO - Database initialization completed.
+2024-10-24 16:31:12,989 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009794 seconds, for an average of 0.0004080833333333334 seconds per hash.
+2024-10-24 16:31:12,989 - functions - INFO - Checking models directory...
+2024-10-24 16:31:12,989 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:31:12,990 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:31:12,990 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:31:12,990 - functions - INFO - Model downloads completed.
+2024-10-24 16:31:12,996 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:31:12,997 - main - INFO - Application initialization complete
+2024-10-24 16:31:20,374 - main - INFO - Attempting to enqueue job with ID: 21ef9bb6d48258cb84ae173b7be9ce67
+2024-10-24 16:31:20,383 - main - INFO - Job enqueued successfully. Job ID: 21ef9bb6d48258cb84ae173b7be9ce67
+2024-10-24 16:31:20,384 - main - ERROR - Failed to fetch job: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+2024-10-24 16:31:20,384 - main - ERROR - Failed to queue model download: 500: Failed to fetch job after enqueueing: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+2024-10-24 16:31:20,389 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 280, in add_new_model
+    enqueued_job = Job.fetch(unique_id, connection=model_worker.redis_conn)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 591, in fetch
+    job.refresh()
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 991, in refresh
+    data = self.connection.hgetall(self.key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/commands/core.py", line 4978, in hgetall
+    return self.execute_command("HGETALL", name, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 559, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 567, in _execute_command
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/retry.py", line 62, in call_with_retry
+    return do()
+           ^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 568, in <lambda>
+    lambda: self._send_command_parse_response(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 542, in _send_command_parse_response
+    return self.parse_response(conn, command_name, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/client.py", line 584, in parse_response
+    response = connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/connection.py", line 592, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 60, in _read_response
+    self._read_response(disable_decoding=disable_decoding)
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/resp2.py", line 67, in _read_response
+    response = self.encoder.decode(response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/redis/_parsers/encoders.py", line 43, in decode
+    value = value.decode(self.encoding, self.encoding_errors)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 283, in add_new_model
+    raise HTTPException(status_code=500, detail=f"Failed to fetch job after enqueueing: {str(e)}")
+fastapi.exceptions.HTTPException: 500: Failed to fetch job after enqueueing: 'utf-8' codec can't decode byte 0x9c in position 1: invalid start byte
+
+2024-10-24 16:34:08,039 - main - INFO - Application shutdown initiated
+2024-10-24 16:34:10,039 - main - INFO - Starting application initialization
+2024-10-24 16:34:10,041 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:34:10,046 - db - INFO - Database initialization completed.
+2024-10-24 16:34:10,057 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010533 seconds, for an average of 0.00043887500000000003 seconds per hash.
+2024-10-24 16:34:10,057 - functions - INFO - Checking models directory...
+2024-10-24 16:34:10,057 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:34:10,057 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:34:10,057 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:34:10,057 - functions - INFO - Model downloads completed.
+2024-10-24 16:34:10,063 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:34:10,065 - main - INFO - Application initialization complete
+2024-10-24 16:34:15,321 - main - INFO - Application shutdown initiated
+2024-10-24 16:34:32,138 - main - INFO - Starting application initialization
+2024-10-24 16:34:32,140 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:34:32,145 - db - INFO - Database initialization completed.
+2024-10-24 16:34:32,157 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.011551 seconds, for an average of 0.0004812916666666667 seconds per hash.
+2024-10-24 16:34:32,158 - functions - INFO - Checking models directory...
+2024-10-24 16:34:32,158 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:34:32,158 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:34:32,158 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:34:32,158 - functions - INFO - Model downloads completed.
+2024-10-24 16:34:32,165 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:34:32,167 - main - INFO - Application initialization complete
+2024-10-24 16:36:16,089 - main - INFO - Application shutdown initiated
+2024-10-24 16:36:18,247 - main - INFO - Starting application initialization
+2024-10-24 16:36:18,248 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:36:18,253 - db - INFO - Database initialization completed.
+2024-10-24 16:36:18,264 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010401 seconds, for an average of 0.000433375 seconds per hash.
+2024-10-24 16:36:18,264 - functions - INFO - Checking models directory...
+2024-10-24 16:36:18,264 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:36:18,264 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:36:18,265 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:36:18,265 - functions - INFO - Model downloads completed.
+2024-10-24 16:36:18,271 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:36:18,273 - main - INFO - Application initialization complete
+2024-10-24 16:36:31,638 - main - INFO - Application shutdown initiated
+2024-10-24 16:36:33,294 - main - INFO - Starting application initialization
+2024-10-24 16:36:33,300 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:36:33,305 - db - INFO - Database initialization completed.
+2024-10-24 16:36:33,314 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009512 seconds, for an average of 0.00039633333333333334 seconds per hash.
+2024-10-24 16:36:33,315 - functions - INFO - Checking models directory...
+2024-10-24 16:36:33,315 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:36:33,315 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:36:33,315 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:36:33,315 - functions - INFO - Model downloads completed.
+2024-10-24 16:36:33,320 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:36:33,321 - main - INFO - Application initialization complete
+2024-10-24 16:36:55,328 - main - INFO - Application shutdown initiated
+2024-10-24 16:36:57,223 - main - INFO - Starting application initialization
+2024-10-24 16:36:57,226 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:36:57,232 - db - INFO - Database initialization completed.
+2024-10-24 16:36:57,243 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010698 seconds, for an average of 0.00044574999999999997 seconds per hash.
+2024-10-24 16:36:57,243 - functions - INFO - Checking models directory...
+2024-10-24 16:36:57,243 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:36:57,243 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:36:57,243 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:36:57,243 - functions - INFO - Model downloads completed.
+2024-10-24 16:36:57,250 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:36:57,251 - main - INFO - Application initialization complete
+2024-10-24 16:37:10,302 - main - INFO - Application shutdown initiated
+2024-10-24 16:37:11,727 - main - INFO - Starting application initialization
+2024-10-24 16:37:11,728 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:37:11,733 - db - INFO - Database initialization completed.
+2024-10-24 16:37:11,742 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009518 seconds, for an average of 0.00039658333333333337 seconds per hash.
+2024-10-24 16:37:11,743 - functions - INFO - Checking models directory...
+2024-10-24 16:37:11,743 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:37:11,743 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:37:11,743 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:37:11,743 - functions - INFO - Model downloads completed.
+2024-10-24 16:37:11,748 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:37:11,749 - main - INFO - Application initialization complete
+2024-10-24 16:37:24,480 - main - INFO - Processing model URL: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-24 16:37:24,483 - main - ERROR - Failed to enqueue job: name 'download_model_task' is not defined
+2024-10-24 16:37:24,483 - main - ERROR - Failed to process model download request: 500: Failed to queue model download: name 'download_model_task' is not defined
+2024-10-24 16:37:24,488 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 275, in add_new_model
+    download_model_task,
+    ^^^^^^^^^^^^^^^^^^^
+NameError: name 'download_model_task' is not defined. Did you mean: 'download_models'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 309, in add_new_model
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 500: Failed to queue model download: name 'download_model_task' is not defined
+
+2024-10-24 16:38:22,072 - main - INFO - Application shutdown initiated
+2024-10-24 16:38:23,963 - main - INFO - Starting application initialization
+2024-10-24 16:38:23,964 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-24 16:38:23,969 - db - INFO - Database initialization completed.
+2024-10-24 16:38:23,979 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009996 seconds, for an average of 0.0004165 seconds per hash.
+2024-10-24 16:38:23,979 - functions - INFO - Checking models directory...
+2024-10-24 16:38:23,979 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-24 16:38:23,979 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-24 16:38:23,979 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-24 16:38:23,979 - functions - INFO - Model downloads completed.
+2024-10-24 16:38:23,985 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-24 16:38:23,986 - main - INFO - Application initialization complete
+2024-10-24 16:38:27,089 - main - INFO - Processing model URL: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-24 16:38:27,095 - main - INFO - Job enqueued successfully. Job ID: d83bdc0e10e98794fea35b1944c7568e
+2024-10-24 16:49:28,996 - main - INFO - Processing model URL: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-24 16:49:28,997 - main - INFO - Job enqueued successfully. Job ID: 4ad1ec4884ee71c2cfc851a7103ac1ea
+2024-10-25 11:24:43,891 - main - INFO - Application shutdown initiated
+2024-10-25 13:47:59,379 - main - INFO - Starting application initialization
+2024-10-25 13:47:59,381 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 13:47:59,388 - db - INFO - Database initialization completed.
+2024-10-25 13:47:59,399 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010691 seconds, for an average of 0.00044545833333333335 seconds per hash.
+2024-10-25 13:47:59,399 - functions - INFO - Checking models directory...
+2024-10-25 13:47:59,399 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 13:47:59,399 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 13:47:59,399 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 13:47:59,399 - functions - INFO - Model downloads completed.
+2024-10-25 13:47:59,406 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 13:47:59,408 - main - INFO - Application initialization complete
+2024-10-25 13:50:03,443 - main - INFO - Processing model URL: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 13:50:03,460 - main - INFO - Job enqueued successfully. Job ID: 28a2b04387314978c3f60e22da540a6d
+2024-10-25 13:51:37,067 - main - INFO - Processing model URL: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 13:51:37,069 - main - INFO - Job enqueued successfully. Job ID: 6221224200cbc5f9374b89185ffa842e
+2024-10-25 13:51:38,501 - worker - INFO - Starting download task for model URL: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 13:51:38,502 - functions - INFO - Model URL not found in database. Adding https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf now...
+2024-10-25 13:51:38,503 - functions - INFO - Model URL added: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 13:51:38,503 - functions - INFO - Checking models directory...
+2024-10-25 13:51:38,504 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 13:51:38,504 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 13:51:38,504 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 13:51:38,505 - functions - INFO - Downloading model llava-llama-3-8b-v1_1-int4.gguf from https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf...
+2024-10-25 13:53:36,288 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 13:53:36,288 - functions - INFO - Model downloads completed.
+2024-10-25 13:53:36,302 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (6221224200cbc5f9374b89185ffa842e)
+2024-10-25 13:53:36,303 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-25 13:54:16,625 - main - INFO - Application shutdown initiated
+2024-10-25 14:37:07,722 - main - INFO - Starting application initialization
+2024-10-25 14:37:07,726 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 14:37:07,743 - db - INFO - Database initialization completed.
+2024-10-25 14:37:07,759 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.015991 seconds, for an average of 0.0006662916666666666 seconds per hash.
+2024-10-25 14:37:07,759 - functions - INFO - Checking models directory...
+2024-10-25 14:37:07,759 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 14:37:07,760 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 14:37:07,760 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 14:37:07,760 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 14:37:07,760 - functions - INFO - Model downloads completed.
+2024-10-25 14:37:07,768 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 14:37:07,771 - main - INFO - Application initialization complete
+2024-10-25 14:39:17,183 - main - INFO - Application shutdown initiated
+2024-10-25 15:46:22,855 - main - INFO - Starting application initialization
+2024-10-25 15:46:22,856 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:46:22,864 - db - INFO - Database initialization completed.
+2024-10-25 15:46:22,874 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010434 seconds, for an average of 0.00043475 seconds per hash.
+2024-10-25 15:46:22,875 - functions - INFO - Checking models directory...
+2024-10-25 15:46:22,875 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:46:22,875 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:46:22,875 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:46:22,875 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:46:22,875 - functions - INFO - Model downloads completed.
+2024-10-25 15:46:22,881 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:46:22,883 - main - INFO - Application initialization complete
+2024-10-25 15:46:35,422 - main - INFO - Application shutdown initiated
+2024-10-25 15:47:25,674 - main - INFO - Starting application initialization
+2024-10-25 15:47:25,675 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:47:25,679 - db - INFO - Database initialization completed.
+2024-10-25 15:47:25,688 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009522 seconds, for an average of 0.00039674999999999997 seconds per hash.
+2024-10-25 15:47:25,688 - functions - INFO - Checking models directory...
+2024-10-25 15:47:25,688 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:47:25,689 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:47:25,689 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:47:25,689 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:47:25,689 - functions - INFO - Model downloads completed.
+2024-10-25 15:47:25,694 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:47:25,695 - main - INFO - Application initialization complete
+2024-10-25 15:48:00,885 - __main__ - INFO - Initializing worker...
+2024-10-25 15:48:00,886 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-25 15:48:00,889 - __main__ - INFO - Worker started successfully
+2024-10-25 15:48:00,900 - __main__ - ERROR - Failed to start worker: cannot pickle '_thread.lock' object
+2024-10-25 15:48:00,902 - __main__ - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 113, in start_worker
+    worker.work(with_scheduler=True)
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 37, in work
+    return pool.apply(super().work, args=args, kwds=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 360, in apply
+    return self.apply_async(func, args, kwds).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 540, in _handle_tasks
+    put(task)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/connection.py", line 206, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+TypeError: cannot pickle '_thread.lock' object
+
+2024-10-25 15:48:41,778 - main - INFO - Application shutdown initiated
+2024-10-25 15:48:43,233 - main - INFO - Starting application initialization
+2024-10-25 15:48:43,234 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:48:43,238 - db - INFO - Database initialization completed.
+2024-10-25 15:48:43,247 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009197 seconds, for an average of 0.00038320833333333333 seconds per hash.
+2024-10-25 15:48:43,248 - functions - INFO - Checking models directory...
+2024-10-25 15:48:43,248 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:48:43,248 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:48:43,248 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:48:43,248 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:48:43,248 - functions - INFO - Model downloads completed.
+2024-10-25 15:48:43,253 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:48:43,254 - main - INFO - Application initialization complete
+2024-10-25 15:48:46,433 - __main__ - INFO - Initializing worker...
+2024-10-25 15:48:46,433 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-25 15:48:46,435 - __main__ - INFO - Worker started successfully
+2024-10-25 15:48:47,646 - __main__ - ERROR - Failed to start worker: BaseWorker.__init__() missing 1 required positional argument: 'queues'
+2024-10-25 15:48:47,647 - __main__ - ERROR - multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 43, in _work_wrapper
+    worker = Worker(*args)
+             ^^^^^^^^^^^^^
+TypeError: BaseWorker.__init__() missing 1 required positional argument: 'queues'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 118, in start_worker
+    worker.work(with_scheduler=True)
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 37, in work
+    return pool.apply(self._work_wrapper, args=(args, kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 360, in apply
+    return self.apply_async(func, args, kwds).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+TypeError: BaseWorker.__init__() missing 1 required positional argument: 'queues'
+
+2024-10-25 15:50:06,464 - main - INFO - Application shutdown initiated
+2024-10-25 15:50:07,878 - main - INFO - Starting application initialization
+2024-10-25 15:50:07,879 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:50:07,883 - db - INFO - Database initialization completed.
+2024-10-25 15:50:07,892 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009199 seconds, for an average of 0.0003832916666666667 seconds per hash.
+2024-10-25 15:50:07,892 - functions - INFO - Checking models directory...
+2024-10-25 15:50:07,893 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:50:07,893 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:50:07,893 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:50:07,893 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:50:07,893 - functions - INFO - Model downloads completed.
+2024-10-25 15:50:07,898 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:50:07,899 - main - INFO - Application initialization complete
+2024-10-25 15:50:11,867 - __main__ - INFO - Initializing worker...
+2024-10-25 15:50:11,867 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-25 15:50:11,869 - __main__ - INFO - Worker started successfully
+2024-10-25 15:50:11,880 - __main__ - ERROR - Failed to start worker: cannot pickle '_thread.lock' object
+2024-10-25 15:50:11,881 - __main__ - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 119, in start_worker
+    worker.work(with_scheduler=True)
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 37, in work
+    return pool.apply(self._work_wrapper, args=(self.queues, self.name, self.connection, args, kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 360, in apply
+    return self.apply_async(func, args, kwds).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/pool.py", line 540, in _handle_tasks
+    put(task)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/connection.py", line 206, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+TypeError: cannot pickle '_thread.lock' object
+
+2024-10-25 15:50:48,248 - main - INFO - Application shutdown initiated
+2024-10-25 15:50:49,725 - main - INFO - Starting application initialization
+2024-10-25 15:50:49,727 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:50:49,731 - db - INFO - Database initialization completed.
+2024-10-25 15:50:49,742 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010163 seconds, for an average of 0.00042345833333333336 seconds per hash.
+2024-10-25 15:50:49,742 - functions - INFO - Checking models directory...
+2024-10-25 15:50:49,742 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:50:49,742 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:50:49,742 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:50:49,742 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:50:49,742 - functions - INFO - Model downloads completed.
+2024-10-25 15:50:49,748 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:50:49,749 - main - INFO - Application initialization complete
+2024-10-25 15:50:52,968 - __main__ - INFO - Initializing worker...
+2024-10-25 15:50:52,968 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-25 15:50:52,975 - __main__ - INFO - Worker started successfully with PID: 34086
+2024-10-25 15:50:54,184 - rq.worker - INFO - Worker rq:worker:worker-34086 started with PID 34086, version 1.16.2
+2024-10-25 15:50:54,185 - rq.worker - INFO - Subscribing to channel rq:pubsub:worker-34086
+2024-10-25 15:50:54,186 - rq.worker - INFO - *** Listening on [32mmodel_downloads, file_uploads, document_scans[39;49;00m...
+2024-10-25 15:50:54,192 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-25 15:50:54,194 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-25 15:50:54,195 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-25 15:50:55,447 - rq.scheduler - INFO - Scheduler for model_downloads, document_scans, file_uploads started with PID 34091
+2024-10-25 15:51:58,626 - main - INFO - Processing model URL:   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:51:58,631 - main - INFO - Job enqueued successfully. Job ID: 2b9b3b93e564049a34ab5f5bca7fdb55
+2024-10-25 15:51:58,633 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mworker.download_model_task('  "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/...)[39;49;00m (2b9b3b93e564049a34ab5f5bca7fdb55)
+2024-10-25 15:51:58,656 - rq.worker - ERROR - [Job 2b9b3b93e564049a34ab5f5bca7fdb55]: exception raised while executing (worker.download_model_task)
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/utils.py", line 118, in import_attribute
+    attribute_owner = getattr(module, attribute_owner_name)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'worker' has no attribute ''
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/worker.py", line 1430, in perform_job
+    rv = job.perform()
+         ^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1280, in perform
+    self._result = self._execute()
+                   ^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1317, in _execute
+    result = self.func(*self.args, **self.kwargs)
+             ^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 425, in func
+    return import_attribute(self.func_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/utils.py", line 120, in import_attribute
+    raise ValueError('Invalid attribute name: %s' % attribute_name)
+ValueError: Invalid attribute name: download_model_task
+
+2024-10-25 15:53:00,048 - main - INFO - Application shutdown initiated
+2024-10-25 15:53:01,446 - main - INFO - Starting application initialization
+2024-10-25 15:53:01,447 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:53:01,452 - db - INFO - Database initialization completed.
+2024-10-25 15:53:01,461 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009231 seconds, for an average of 0.000384625 seconds per hash.
+2024-10-25 15:53:01,461 - functions - INFO - Checking models directory...
+2024-10-25 15:53:01,461 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:53:01,461 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:53:01,461 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:53:01,462 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:53:01,462 - functions - INFO - Model downloads completed.
+2024-10-25 15:53:01,466 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:53:01,467 - main - INFO - Application initialization complete
+2024-10-25 15:53:03,100 - __main__ - INFO - Worker stopped by user
+2024-10-25 15:53:03,100 - rq.worker - INFO - Worker worker-34086 [PID 34086]: warm shut down requested
+2024-10-25 15:53:03,128 - rq.scheduler - INFO - Scheduler stopping, releasing locks for model_downloads, document_scans, file_uploads...
+2024-10-25 15:53:03,129 - rq.scheduler - INFO - Scheduler with PID 34091 has stopped
+2024-10-25 15:53:03,346 - rq.worker - INFO - Unsubscribing from channel rq:pubsub:worker-34086
+2024-10-25 15:53:05,675 - __main__ - INFO - Initializing worker...
+2024-10-25 15:53:05,675 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-25 15:53:05,682 - __main__ - INFO - Worker started successfully with PID: 34268
+2024-10-25 15:53:06,872 - rq.worker - INFO - Worker rq:worker:worker-34268 started with PID 34268, version 1.16.2
+2024-10-25 15:53:06,872 - rq.worker - INFO - Subscribing to channel rq:pubsub:worker-34268
+2024-10-25 15:53:06,873 - rq.worker - INFO - *** Listening on [32mmodel_downloads, file_uploads, document_scans[39;49;00m...
+2024-10-25 15:53:06,879 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-25 15:53:06,881 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-25 15:53:06,883 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-25 15:53:08,086 - rq.scheduler - INFO - Scheduler for file_uploads, document_scans, model_downloads started with PID 34282
+2024-10-25 15:53:14,535 - main - INFO - Processing model URL:   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:53:14,539 - main - INFO - Job enqueued successfully. Job ID: dc8203f04834c6f79471bf38900b6e2d
+2024-10-25 15:53:14,541 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mworker.download_model_task('  "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/...)[39;49;00m (dc8203f04834c6f79471bf38900b6e2d)
+2024-10-25 15:53:14,556 - worker - INFO - Starting download task for model URL:   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:53:14,557 - functions - INFO - Model URL not found in database. Adding   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf now...
+2024-10-25 15:53:14,560 - functions - INFO - Model URL added:   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:53:14,560 - functions - INFO - Checking models directory...
+2024-10-25 15:53:14,561 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:53:14,562 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:53:14,563 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:53:14,563 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:53:14,564 - functions - INFO - Downloading model Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf from   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf...
+2024-10-25 15:53:14,576 - worker - ERROR - Error in download task: <urlopen error unknown url type: "https>
+2024-10-25 15:53:14,579 - worker - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 51, in download_model_task
+    _, download_status = download_models()
+                         ^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/src/functions.py", line 248, in download_models
+    urllib.request.urlretrieve(url, filename)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 240, in urlretrieve
+    with contextlib.closing(urlopen(url, data)) as fp:
+                            ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 537, in _open
+    return self._call_chain(self.handle_open, 'unknown',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 1420, in unknown_open
+    raise URLError('unknown url type: %s' % type)
+urllib.error.URLError: <urlopen error unknown url type: "https>
+
+2024-10-25 15:53:14,582 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (dc8203f04834c6f79471bf38900b6e2d)
+2024-10-25 15:53:14,582 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-25 15:53:21,751 - main - INFO - Processing model URL: https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:53:21,753 - main - INFO - Job enqueued successfully. Job ID: d4fe7664bd1fa9226efdfeddd86f3e57
+2024-10-25 15:53:21,755 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mworker.download_model_task('https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/res...)[39;49;00m (d4fe7664bd1fa9226efdfeddd86f3e57)
+2024-10-25 15:53:21,771 - worker - INFO - Starting download task for model URL: https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:53:21,772 - functions - INFO - Model URL not found in database. Adding https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf now...
+2024-10-25 15:53:21,773 - functions - INFO - Model URL added: https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf
+2024-10-25 15:53:21,773 - functions - INFO - Checking models directory...
+2024-10-25 15:53:21,773 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:53:21,774 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:53:21,775 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf
+2024-10-25 15:53:21,776 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-25 15:53:21,776 - functions - INFO - Downloading model Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf from   "https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q4.gguf...
+2024-10-25 15:53:21,789 - worker - ERROR - Error in download task: <urlopen error unknown url type: "https>
+2024-10-25 15:53:21,791 - worker - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 51, in download_model_task
+    _, download_status = download_models()
+                         ^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/src/functions.py", line 248, in download_models
+    urllib.request.urlretrieve(url, filename)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 240, in urlretrieve
+    with contextlib.closing(urlopen(url, data)) as fp:
+                            ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 537, in _open
+    return self._call_chain(self.handle_open, 'unknown',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 1420, in unknown_open
+    raise URLError('unknown url type: %s' % type)
+urllib.error.URLError: <urlopen error unknown url type: "https>
+
+2024-10-25 15:53:21,793 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (d4fe7664bd1fa9226efdfeddd86f3e57)
+2024-10-25 15:53:21,794 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-25 15:54:03,213 - main - INFO - Application shutdown initiated
+2024-10-25 15:54:15,172 - main - INFO - Starting application initialization
+2024-10-25 15:54:15,173 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:54:15,177 - db - INFO - Database initialization completed.
+2024-10-25 15:54:15,188 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010607 seconds, for an average of 0.0004419583333333333 seconds per hash.
+2024-10-25 15:54:15,188 - functions - INFO - Checking models directory...
+2024-10-25 15:54:15,188 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:54:15,188 - functions - INFO - Downloading model nomic-embed-text-v1.5.Q6_K.gguf from https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q6_K.gguf...
+2024-10-25 15:54:18,834 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:54:18,834 - functions - INFO - Downloading model Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf from https://huggingface.co/Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2-GGUF/resolve/main/Llama-3.1-8B-Lexi-Uncensored_V2_Q5.gguf...
+2024-10-25 15:56:43,342 - main - INFO - Starting application initialization
+2024-10-25 15:56:43,343 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:56:43,348 - db - INFO - Database initialization completed.
+2024-10-25 15:56:43,358 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.00989 seconds, for an average of 0.0004120833333333333 seconds per hash.
+2024-10-25 15:56:43,358 - functions - INFO - Checking models directory...
+2024-10-25 15:56:43,358 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:56:43,359 - functions - INFO - Downloading model nomic-embed-text-v1.5.Q6_K.gguf from https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q6_K.gguf...
+2024-10-25 15:56:46,438 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:56:46,439 - functions - INFO - Model downloads completed.
+2024-10-25 15:56:46,455 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:56:46,458 - main - INFO - Application initialization complete
+2024-10-25 15:57:32,563 - main - INFO - Processing model URL: https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 15:57:32,572 - main - INFO - Job enqueued successfully. Job ID: 2655b25ec62a5df7db540fce957002fd
+2024-10-25 15:57:32,573 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mworker.download_model_task('https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/mai...)[39;49;00m (2655b25ec62a5df7db540fce957002fd)
+2024-10-25 15:57:32,589 - worker - INFO - Starting download task for model URL: https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 15:57:32,590 - functions - INFO - Model URL not found in database. Adding https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf now...
+2024-10-25 15:57:32,590 - functions - INFO - Model URL added: https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 15:57:32,591 - functions - INFO - Checking models directory...
+2024-10-25 15:57:32,591 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:57:32,592 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:57:32,594 - functions - INFO - Downloading model Hermes-3-Llama-3.1-8B.Q4_K_M.gguf from https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf...
+2024-10-25 15:57:52,392 - main - ERROR - Error listing jobs: 'MultiQueueWorker' object has no attribute 'model_queue'
+2024-10-25 15:57:52,399 - main - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/main.py", line 368, in list_model_jobs
+    job_ids = multi_queue_worker.model_queue.get_job_ids()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MultiQueueWorker' object has no attribute 'model_queue'
+
+2024-10-25 15:59:15,636 - main - INFO - Application shutdown initiated
+2024-10-25 15:59:17,508 - main - INFO - Starting application initialization
+2024-10-25 15:59:17,510 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 15:59:17,514 - db - INFO - Database initialization completed.
+2024-10-25 15:59:17,524 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010179 seconds, for an average of 0.000424125 seconds per hash.
+2024-10-25 15:59:17,524 - functions - INFO - Checking models directory...
+2024-10-25 15:59:17,524 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 15:59:31,102 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 15:59:31,105 - functions - INFO - Model downloads completed.
+2024-10-25 15:59:31,110 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (2655b25ec62a5df7db540fce957002fd)
+2024-10-25 15:59:31,111 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-25 15:59:31,153 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 15:59:31,153 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 15:59:31,153 - functions - INFO - Model downloads completed.
+2024-10-25 15:59:31,164 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 15:59:31,167 - main - INFO - Application initialization complete
+2024-10-25 15:59:57,795 - main - INFO - Application shutdown initiated
+2024-10-25 16:00:00,590 - main - INFO - Starting application initialization
+2024-10-25 16:00:00,591 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 16:00:00,595 - db - INFO - Database initialization completed.
+2024-10-25 16:00:00,605 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.009691 seconds, for an average of 0.00040379166666666667 seconds per hash.
+2024-10-25 16:00:00,605 - functions - INFO - Checking models directory...
+2024-10-25 16:00:00,605 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:00:00,606 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:00:00,606 - functions - INFO - Downloading model Hermes-3-Llama-3.1-8B.Q4_K_M.gguf from https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf...
+2024-10-25 16:01:58,901 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:01:58,903 - functions - INFO - Model downloads completed.
+2024-10-25 16:01:58,918 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 16:01:58,921 - main - INFO - Application initialization complete
+2024-10-25 16:02:12,333 - main - INFO - Starting application initialization
+2024-10-25 16:02:12,334 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 16:02:12,338 - db - INFO - Database initialization completed.
+2024-10-25 16:02:12,349 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010932 seconds, for an average of 0.0004555 seconds per hash.
+2024-10-25 16:02:12,350 - functions - INFO - Checking models directory...
+2024-10-25 16:02:12,350 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:02:12,350 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:02:12,350 - functions - INFO - Model downloads completed.
+2024-10-25 16:02:12,356 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 16:02:12,357 - main - INFO - Application initialization complete
+2024-10-25 16:02:23,165 - main - INFO - Processing model URL: https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:02:23,170 - main - INFO - Job enqueued successfully. Job ID: 06e9f1723c86f0e2ec17e09de2dba385
+2024-10-25 16:02:23,170 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mworker.download_model_task('https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/mai...)[39;49;00m (06e9f1723c86f0e2ec17e09de2dba385)
+2024-10-25 16:02:23,186 - worker - INFO - Starting download task for model URL: https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:02:23,187 - functions - INFO - Model URL not found in database. Adding https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf now...
+2024-10-25 16:02:23,188 - functions - INFO - Model URL added: https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:02:23,189 - functions - INFO - Checking models directory...
+2024-10-25 16:02:23,189 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:02:23,191 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:02:23,191 - functions - INFO - Downloading model Hermes-3-Llama-3.1-8B.Q4_K_M.gguf from https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf...
+2024-10-25 16:04:20,254 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:04:20,258 - functions - INFO - Model downloads completed.
+2024-10-25 16:04:20,265 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (06e9f1723c86f0e2ec17e09de2dba385)
+2024-10-25 16:04:20,266 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-25 16:04:20,277 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-25 16:04:20,279 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-25 16:04:20,281 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-25 16:17:50,365 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-25 16:17:50,369 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-25 16:17:50,372 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-25 16:20:29,796 - main - INFO - Application shutdown initiated
+2024-10-25 16:20:31,843 - main - INFO - Starting application initialization
+2024-10-25 16:20:31,844 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 16:20:31,849 - db - INFO - Database initialization completed.
+2024-10-25 16:20:31,860 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010327 seconds, for an average of 0.00043029166666666666 seconds per hash.
+2024-10-25 16:20:31,860 - functions - INFO - Checking models directory...
+2024-10-25 16:20:31,860 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:20:31,861 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:20:31,861 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:20:31,861 - functions - INFO - Model downloads completed.
+2024-10-25 16:20:31,868 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 16:20:31,869 - main - INFO - Application initialization complete
+2024-10-25 16:20:36,419 - main - INFO - Application shutdown initiated
+2024-10-25 16:20:48,788 - main - INFO - Starting application initialization
+2024-10-25 16:20:48,790 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 16:20:48,794 - db - INFO - Database initialization completed.
+2024-10-25 16:20:48,805 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010746 seconds, for an average of 0.00044775 seconds per hash.
+2024-10-25 16:20:48,805 - functions - INFO - Checking models directory...
+2024-10-25 16:20:48,805 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:20:48,806 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:20:48,806 - functions - INFO - Downloading model Hermes-3-Llama-3.1-8B.Q4_K_M.gguf from https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf...
+2024-10-25 16:22:49,505 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:22:49,505 - functions - INFO - Model downloads completed.
+2024-10-25 16:22:49,524 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 16:22:49,526 - main - INFO - Application initialization complete
+2024-10-25 16:22:59,098 - main - INFO - Processing model URL: https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf
+2024-10-25 16:22:59,103 - main - INFO - Job enqueued successfully. Job ID: 477139713712b0374b6cd71a7031ac37
+2024-10-25 16:22:59,105 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mworker.download_model_task('https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf')[39;49;00m (477139713712b0374b6cd71a7031ac37)
+2024-10-25 16:22:59,124 - worker - INFO - Starting download task for model URL: https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf
+2024-10-25 16:22:59,126 - functions - INFO - Model URL not found in database. Adding https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf now...
+2024-10-25 16:22:59,127 - functions - INFO - Model URL added: https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf
+2024-10-25 16:22:59,128 - functions - INFO - Checking models directory...
+2024-10-25 16:22:59,129 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:22:59,130 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:22:59,130 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:22:59,131 - functions - INFO - Downloading model bge-m3-q8_0.gguf from https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf...
+2024-10-25 16:23:14,627 - functions - INFO - Downloaded: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-25 16:23:14,628 - functions - INFO - Model downloads completed.
+2024-10-25 16:23:14,630 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (477139713712b0374b6cd71a7031ac37)
+2024-10-25 16:23:14,631 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-25 16:29:59,713 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-25 16:29:59,717 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-25 16:29:59,718 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-25 16:35:56,621 - main - INFO - Application shutdown initiated
+2024-10-25 16:35:58,423 - main - INFO - Starting application initialization
+2024-10-25 16:35:58,424 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-25 16:35:58,430 - db - INFO - Database initialization completed.
+2024-10-25 16:35:58,440 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 24; Took 0.010076 seconds, for an average of 0.0004198333333333333 seconds per hash.
+2024-10-25 16:35:58,440 - functions - INFO - Checking models directory...
+2024-10-25 16:35:58,440 - functions - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-25 16:35:58,441 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-25 16:35:58,441 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-25 16:35:58,441 - functions - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-25 16:35:58,441 - functions - INFO - Model downloads completed.
+2024-10-25 16:35:58,447 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-25 16:35:58,448 - main - INFO - Application initialization complete
+2024-10-25 16:36:03,603 - main - INFO - Application shutdown initiated

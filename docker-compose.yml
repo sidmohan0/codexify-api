@@ -1,0 +1,17 @@
+
+services:
+  api:
+    build: .
+    ports:
+      - "8089:8089"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8089 --workers 4
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"

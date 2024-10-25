@@ -5,9 +5,8 @@ from models import DocumentEmbedding, Document, TextEmbedding, DocumentContentRe
 from models import EmbeddingRequest, SemanticSearchRequest, AdvancedSemanticSearchRequest, SimilarityRequest, SimilarityResponse
 from models import EmbeddingResponse, SemanticSearchResponse, AdvancedSemanticSearchResponse, AllDocumentsResponse
 from models import SemanticDataType, SemanticDataTypeEmbeddingRequest, SemanticDataTypeEmbeddingResponse, SemanticSearchRequest, SemanticSearchResponse, AllSemanticDataTypesResponse
-from functions import get_or_compute_embedding,  add_model_url, download_file, decompress_data, store_document_embeddings_in_db, download_models, initialize_globals
+from functions import get_or_compute_embedding,  add_model_url, download_file, decompress_data, store_document_embeddings_in_db, download_models, initialize_globals, RedisManager
 from functions import get_list_of_corpus_identifiers_from_list_of_embedding_texts, compute_embeddings_for_document, parse_submitted_document_file_into_sentence_strings_func,prepare_string_for_embedding, sophisticated_sentence_splitter, remove_pagination_breaks, truncate_string
-
 import asyncio
 import glob
 import json
@@ -36,6 +35,24 @@ import uvloop
 from magika import Magika
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+
+from fastapi import FastAPI, BackgroundTasks
+from typing import Dict, Any
+from rq.job import Job
+from worker import MultiQueueWorker
+import hashlib
+from functions import redis_manager
+from rq import Queue
+
+import os
+import redis
+
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+redis_port = int(os.environ.get('REDIS_PORT', 6379))
+
+redis_client = redis.Redis(host=redis_host, port=redis_port)
+
+
 
 logger = logging.getLogger(__name__)
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -152,16 +169,31 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
     return JSONResponse(status_code=500, content={"message": "An unexpected error occurred"})
 
 
+logger = logging.getLogger(__name__)
+
+# Initialize Redis manager for the API
+multi_queue_worker = MultiQueueWorker()
+
 @app.on_event("startup")
 async def pre_startup_tasks():
+    """Initialize necessary components on startup"""
     logger.info("Starting pre-startup tasks")
-    logger.info("Initializing globals")
-    await initialize_globals()
-    logger.info("Building FAISS indexes")
-    await build_faiss_indexes(force_rebuild=True)
-    logger.info("Downloading models")
-    await download_models()
-    logger.info("Pre-startup tasks completed")
+    try:
+        logger.info("Initializing globals")
+        await initialize_globals()  # This sets up redis_manager and other components
+        
+        logger.info("Building FAISS indexes")
+        await build_faiss_indexes(force_rebuild=True)
+        
+        logger.info("Downloading initial models")
+        await download_models()
+        
+        logger.info("Pre-startup tasks completed successfully")
+        
+    except Exception as e:
+        logger.error(f"Error during startup: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise
 
 @app.get("/", include_in_schema=False)
 async def load_swagger_ui():
@@ -175,45 +207,189 @@ async def get_list_of_models(token: str = None) -> Dict[str, List[str]]:
     model_names = sorted([os.path.splitext(os.path.basename(model_file))[0] for model_file in model_files])
     return {"model_names": model_names}
 
+# @app.post("/models", response_model=Dict[str, Any])
+# async def add_new_model(model_url: str, token: str = None) -> Dict[str, Any]:
+#     """
+#     Add a new model to the system.
+
+#     1. The model must be in `.gguf` format.
+#     2. The model must be larger than 100 MB to ensure it's a valid model file.
+
+#     Parameters:
+#     - `model_url`: The URL of the model weight file, which must end with `.gguf`.
+#     - `token`: Security token (optional).
+
+#     Returns:
+#     A JSON object indicating the status of the model addition and download.
+#     """
+    
+
+#     unique_id = f"add_model_{hash(model_url)}"
+
+#     try:
+#         decoded_model_url = unquote(model_url)
+#         if not decoded_model_url.endswith('.gguf'):
+#             return {"status": "error", "message": "Model URL must point to a .gguf file."}
+        
+#         corrected_model_url = add_model_url(decoded_model_url)
+#         _, download_status = download_models()
+#         status_dict = {status["url"]: status for status in download_status}
+        
+#         if corrected_model_url in status_dict:
+#             return {
+#                 "status": status_dict[corrected_model_url]["status"],
+#                 "message": status_dict[corrected_model_url]["message"]
+#             }
+        
+#         return {"status": "unknown", "message": "Unexpected error."}
+#     except Exception as e:
+#         logger.error(f"An error occurred while adding the model: {str(e)}")
+#         return {"status": "unknown", "message": f"An unexpected error occurred: {str(e)}"}
+
 @app.post("/models", response_model=Dict[str, Any])
 async def add_new_model(model_url: str, token: str = None) -> Dict[str, Any]:
     """
-    Add a new model to the system.
-
-    1. The model must be in `.gguf` format.
-    2. The model must be larger than 100 MB to ensure it's a valid model file.
-
-    Parameters:
-    - `model_url`: The URL of the model weight file, which must end with `.gguf`.
-    - `token`: Security token (optional).
-
-    Returns:
-    A JSON object indicating the status of the model addition and download.
+    Add a new model to the system using RQ for background processing.
     """
-    
-
-    unique_id = f"add_model_{hash(model_url)}"
-
     try:
-        decoded_model_url = unquote(model_url)
-        if not decoded_model_url.endswith('.gguf'):
-            return {"status": "error", "message": "Model URL must point to a .gguf file."}
-        
-        corrected_model_url = add_model_url(decoded_model_url)
-        _, download_status = download_models()
-        status_dict = {status["url"]: status for status in download_status}
-        
-        if corrected_model_url in status_dict:
-            return {
-                "status": status_dict[corrected_model_url]["status"],
-                "message": status_dict[corrected_model_url]["message"]
-            }
-        
-        return {"status": "unknown", "message": "Unexpected error."}
-    except Exception as e:
-        logger.error(f"An error occurred while adding the model: {str(e)}")
-        return {"status": "unknown", "message": f"An unexpected error occurred: {str(e)}"}
+        # Decode the URL if it's URL-encoded
+        decoded_url = unquote(model_url).strip('"')
+        logger.info(f"Processing model URL: {decoded_url}")
 
+        # Create a unique job ID
+        timestamp = datetime.now().isoformat()
+        unique_id = hashlib.md5(f"{decoded_url}_{timestamp}".encode()).hexdigest()
+        
+        # Check existing jobs using the global redis_manager
+        try:
+            model_downloads_queue = redis_manager.get_queue('model_downloads')
+            existing_jobs = model_downloads_queue.get_job_ids()
+            for job_id in existing_jobs:
+                try:
+                    job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+                    if job and job.args and job.args[0] == decoded_url and job.get_status() != 'failed':
+                        return {
+                            "status": "already_queued",
+                            "message": f"Model download already in progress. Job ID: {job_id}",
+                            "job_id": job_id
+                        }
+                except Exception as fetch_err:
+                    logger.warning(f"Error checking existing job {job_id}: {str(fetch_err)}")
+                    continue
+                    
+        except Exception as e:
+            logger.warning(f"Error checking existing jobs: {str(e)}")
+
+        # Enqueue the new task using the global redis_manager
+        try:
+            job = model_downloads_queue.enqueue(
+                'worker.download_model_task',
+                args=(decoded_url,),
+                job_id=unique_id,
+                result_ttl=86400,
+                failure_ttl=86400,
+                timeout='1h'
+            )
+            
+            if not job:
+                raise Exception("Job creation failed")
+                
+            logger.info(f"Job enqueued successfully. Job ID: {unique_id}")
+            
+            # Verify the job was enqueued
+            verification_attempts = 3
+            for attempt in range(verification_attempts):
+                try:
+                    enqueued_job = Job.fetch(unique_id, connection=redis_manager.redis_sync)
+                    if enqueued_job:
+                        return {
+                            "status": "queued",
+                            "message": f"Model download queued successfully. Job ID: {unique_id}",
+                            "job_id": unique_id
+                        }
+                except Exception as fetch_err:
+                    if attempt == verification_attempts - 1:
+                        raise
+                    logger.warning(f"Verification attempt {attempt + 1} failed: {str(fetch_err)}")
+                    await asyncio.sleep(0.5)  # Wait briefly before retrying
+                    
+            raise Exception("Job verification failed after multiple attempts")
+            
+        except Exception as e:
+            logger.error(f"Failed to enqueue job: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to queue model download: {str(e)}"
+            )
+
+    except Exception as e:
+        error_msg = f"Failed to process model download request: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+    
+    
+@app.get("/models/status/{job_id}", response_model=Dict[str, Any])
+async def get_model_status(job_id: str) -> Dict[str, Any]:
+    """
+    Check the status of a model download job
+    """
+    try:
+        job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+        
+        status_mapping = {
+            'queued': {'status': 'pending', 'message': 'Download queued'},
+            'started': {'status': 'pending', 'message': 'Download in progress'},
+            'finished': {'status': 'completed', 'result': job.result},
+            'failed': {'status': 'failed', 'error': str(job.exc_info)},
+            'stopped': {'status': 'stopped', 'message': 'Download stopped'},
+            'deferred': {'status': 'pending', 'message': 'Download deferred'}
+        }
+        
+        job_status = job.get_status()
+        return status_mapping.get(job_status, {
+            'status': 'unknown',
+            'message': f'Unknown job status: {job_status}'
+        })
+            
+    except Exception as e:
+        error_msg = f"Error fetching job status: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        return {
+            "status": "error",
+            "message": error_msg
+        }
+
+@app.get("/models/jobs", response_model=Dict[str, Any])
+async def list_model_jobs() -> Dict[str, Any]:
+    """
+    List all model download jobs and their statuses
+    """
+    try:
+        jobs = []
+        job_ids = Queue('model_downloads', connection=redis_manager.redis_sync).get_job_ids()
+        
+        for job_id in job_ids:
+            job = Job.fetch(job_id, connection=multi_queue_worker.redis_conn)
+            jobs.append({
+                'job_id': job_id,
+                'status': job.get_status(),
+                'created_at': job.created_at.isoformat() if job.created_at else None,
+                'model_url': job.args[0] if job.args else None
+            })
+            
+        return {
+            "status": "success",
+            "jobs": jobs
+        }
+        
+    except Exception as e:
+        error_msg = f"Error listing jobs: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+      
 @app.post("/calculate_similarity")
 async def calculate_similarity_between_strings(request: SimilarityRequest, req: Request, token: str = None) -> SimilarityResponse:
     logger.info(f"Received request: {request}")
@@ -839,6 +1015,7 @@ async def delete_documents(
         logger.error(f"An error occurred while deleting documents: {str(e)}")
         raise HTTPException(status_code=500, detail=f"An error occurred while deleting documents: {str(e)}")
     
+
 
 if __name__ == "__main__":
     import uvicorn

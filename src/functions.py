@@ -1,4 +1,3 @@
-
 from utils import build_faiss_indexes, is_redis_running, start_redis_server
 from db import AsyncSessionLocal, execute_with_retry
 from models import TextEmbedding, DocumentEmbedding, Document
@@ -40,8 +39,9 @@ from sklearn.random_projection import GaussianRandomProjection
 import logging
 
 from db import DatabaseWriter, initialize_db
-from aioredlock import Aioredlock
-import aioredis
+from redis.asyncio import Redis as AsyncRedis
+from redis import Redis
+from redis.exceptions import LockError
 import asyncio
 import urllib.request
 import os
@@ -53,7 +53,9 @@ import llama_cpp
 from typing import List, Tuple, Dict
 from fastapi import HTTPException
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from rq import Queue
 import logging
+
 logger = logging.getLogger(__name__)
 
 try:
@@ -116,34 +118,101 @@ def is_gpu_available():
             "error": str(e)
         }
         
+# async def initialize_globals():
+#     global db_writer, faiss_indexes, associated_texts_by_model_and_pooling_method, redis, lock_manager
+#     if not is_redis_running():
+#         logger.info("Starting Redis server...")
+#         start_redis_server()
+#         await asyncio.sleep(1)  # Sleep for 1 second to give Redis time to start
+#     redis = Redis.from_url('redis://localhost')
+#     # Remove the lock_manager initialization for now
+#     # lock_manager = Aioredlock([redis])
+#     # lock_manager.default_lock_timeout = 20000  # Lock timeout in milliseconds (20 seconds)
+#     # lock_manager.retry_count = 5  # Number of retries
+#     # lock_manager.retry_delay_min = 100  # Minimum delay between retries in milliseconds
+#     # lock_manager.retry_delay_max = 1000  # Maximum delay between retries in milliseconds
+#     await initialize_db()
+#     queue = asyncio.Queue()
+#     db_writer = DatabaseWriter(queue)
+#     await db_writer.initialize_processing_hashes()
+#     asyncio.create_task(db_writer.dedicated_db_writer())
+#     list_of_downloaded_model_names, download_status = download_models()
+#     faiss_indexes, associated_texts_by_model_and_pooling_method = await build_faiss_indexes()
+
+
+# # other shared variables and methods
+# db_writer = None
+# faiss_indexes = None
+# associated_texts_by_model_and_pooling_method = None
+# redis = None
+# lock_manager = None
+
+class RedisManager:
+    def __init__(self):
+        self.redis_sync = None     # For RQ job queues
+        self.redis_async = None    # For async operations
+        self.queues = {}
+        self.model_queue = None
+        self.db_writer = None
+        self.faiss_indexes = None
+        self.associated_texts_by_model_and_pooling_method = None
+
+    async def initialize(self):
+        """Initialize Redis for async operations and job queues"""
+        if not is_redis_running():
+            logger.info("Starting Redis server...")
+            start_redis_server()
+            await asyncio.sleep(1)  # Give Redis time to start
+
+        # Initialize Redis connections
+        self.redis_sync = Redis(host='localhost', port=6379, db=0)
+        self.redis_async = AsyncRedis(host='localhost', port=6379, db=0)
+
+        # Initialize RQ queues
+        self.queues['model_downloads'] = Queue('model_downloads', connection=self.redis_sync)
+        self.queues['file_uploads'] = Queue('file_uploads', connection=self.redis_sync)
+        self.queues['document_scans'] = Queue('document_scans', connection=self.redis_sync)
+
+        # Initialize database writer and other components
+        await self._initialize_components()
+
+    async def _initialize_components(self):
+        """Initialize database writer and other necessary components"""
+        await initialize_db()
+        queue = asyncio.Queue()
+        self.db_writer = DatabaseWriter(queue)
+        await self.db_writer.initialize_processing_hashes()
+        asyncio.create_task(self.db_writer.dedicated_db_writer())
+        
+        # Initialize models and FAISS indexes
+        list_of_downloaded_model_names, download_status = download_models()
+        self.faiss_indexes, self.associated_texts_by_model_and_pooling_method = (
+            await build_faiss_indexes()
+        )
+
+    def get_queue(self, queue_name):
+        return self.queues.get(queue_name)
+
+# Global instance
+redis_manager = RedisManager()
+
 async def initialize_globals():
-    global db_writer, faiss_indexes, associated_texts_by_model_and_pooling_method, redis, lock_manager
-    if not is_redis_running():
-        logger.info("Starting Redis server...")
-        start_redis_server()
-        await asyncio.sleep(1)  # Sleep for 1 second to give Redis time to start
-    redis = await aioredis.from_url('redis://localhost')
-    lock_manager = Aioredlock([redis])
-    lock_manager.default_lock_timeout = 20000  # Lock timeout in milliseconds (20 seconds)
-    lock_manager.retry_count = 5  # Number of retries
-    lock_manager.retry_delay_min = 100  # Minimum delay between retries in milliseconds
-    lock_manager.retry_delay_max = 1000  # Maximum delay between retries in milliseconds
-    await initialize_db()
-    queue = asyncio.Queue()
-    db_writer = DatabaseWriter(queue)
-    await db_writer.initialize_processing_hashes()
-    asyncio.create_task(db_writer.dedicated_db_writer())
-    list_of_downloaded_model_names, download_status = download_models()
-    faiss_indexes, associated_texts_by_model_and_pooling_method = await build_faiss_indexes()
+    """Initialize global Redis manager and components"""
+    global db_writer, faiss_indexes, associated_texts_by_model_and_pooling_method
+    
+    await redis_manager.initialize()
+    
+    # Update global variables
+    db_writer = redis_manager.db_writer
+    faiss_indexes = redis_manager.faiss_indexes
+    associated_texts_by_model_and_pooling_method = redis_manager.associated_texts_by_model_and_pooling_method
 
+    # You can access queues like this:
+    # model_downloads_queue = redis_manager.get_queue('model_downloads')
+    # file_uploads_queue = redis_manager.get_queue('file_uploads')
+    # document_scans_queue = redis_manager.get_queue('document_scans')
 
-# other shared variables and methods
-db_writer = None
-faiss_indexes = None
-associated_texts_by_model_and_pooling_method = None
-redis = None
-lock_manager = None
-
+    
 def download_models() -> Tuple[List[str], List[Dict[str, str]]]:
     download_status = []    
     json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
@@ -238,7 +307,7 @@ logger = logging.getLogger(__name__)
 magika = Magika()
 db_writer = None
 
-SWISS_ARMY_LLAMA_SERVER_LISTEN_PORT = int(os.getenv("SWISS_ARMY_LLAMA_SERVER_LISTEN_PORT", "8089"))
+CODEXIFY_API_SERVER_LISTEN_PORT = int(os.getenv("CODEXIFY_API_SERVER_LISTEN_PORT", "8080"))
 DEFAULT_LLM_NAME = os.getenv("DEFAULT_LLM_NAME", "openchat_v3.2_super")
 LLM_CONTEXT_SIZE_IN_TOKENS = int(os.getenv("LLM_CONTEXT_SIZE_IN_TOKENS", "512"))
 TEXT_COMPLETION_CONTEXT_SIZE_IN_TOKENS = int(os.getenv("TEXT_COMPLETION_CONTEXT_SIZE_IN_TOKENS", "4000"))
@@ -732,3 +801,6 @@ def remove_pagination_breaks(text: str) -> str:
 
 def truncate_string(s: str, max_length: int = 100) -> str:
     return s[:max_length]
+
+
+
