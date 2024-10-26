@@ -17,3 +17,8 @@ src/models.pyc
 src/*.sqlite
 src/__pycache__/
 src/models/
+
+*.log
+*.log.*
+*.rdb
+*.db

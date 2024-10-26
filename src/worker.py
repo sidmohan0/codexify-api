@@ -4,9 +4,13 @@ import redis
 from rq import Worker, Queue, Connection, get_current_job
 import logging
 import multiprocessing as mp
-from functions import add_model_url, download_models
+from functions import add_model_url, download_models, parse_submitted_document_file_into_sentence_strings_func
 import traceback
 import platform
+import magika
+from hashlib import sha3_256
+import requests
+from magika import Magika
 
 # Configure logging before anything else
 logging.basicConfig(
@@ -18,6 +22,9 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+# At the top of the file, create a Magika instance
+magika_instance = Magika()
 
 def setup_process():
     """Set up process-specific configurations"""
@@ -77,7 +84,6 @@ def download_model_task(model_url: str) -> dict:
             "status": "completed",
             "message": "Model download completed successfully"
         }
-        
     except Exception as e:
         error_msg = f"Error in download task: {str(e)}"
         logger.error(error_msg)
@@ -89,6 +95,81 @@ def download_model_task(model_url: str) -> dict:
             "message": error_msg
         }
 
+async def upload_file_task(file_path_or_url: str, hash: str, size: int, llm_model_name: str, embedding_pooling_method: str, corpus_identifier_string: str, json_format: str, send_back_json_or_zip_file: str, query_text: str) -> dict:
+    """Worker function to handle file upload in the background."""
+    job = get_current_job()
+    job.meta['progress'] = 0
+    job.save_meta()
+
+    logger.info(f"Starting file upload task for file: {file_path_or_url}")
+    try:
+        # Check if it's a URL or a file path
+        if file_path_or_url.startswith(('http://', 'https://')):
+            # Download the file
+            response = requests.get(file_path_or_url)
+            response.raise_for_status()
+            file_content = response.content
+            file_name = file_path_or_url.split('/')[-1]
+        else:
+            # Read the file
+            with open(file_path_or_url, 'rb') as f:
+                file_content = f.read()
+            file_name = os.path.basename(file_path_or_url)
+        
+        # Get file metadata
+        file_size = len(file_content)
+        
+        # Compute file hash
+        hash_obj = sha3_256()
+        hash_obj.update(file_content)
+        file_hash = hash_obj.hexdigest()
+        
+        # Detect file type using Magika
+        result = magika_instance.identify_bytes(file_content)
+        mime_type = result.output.mime_type
+        
+        job.meta['progress'] = 50
+        job.save_meta()
+        
+        # Process the file
+        sentences, thousands_of_input_words = await parse_submitted_document_file_into_sentence_strings_func(file_path_or_url, mime_type)
+        
+        job.meta['progress'] = 80
+        job.save_meta()
+        
+        # Store file information
+        file_info = {
+            "file_name": file_name,
+            "file_size": file_size,
+            "file_hash": file_hash,
+            "mime_type": mime_type,
+            "sentence_count": len(sentences),
+            "word_count": int(thousands_of_input_words * 1000)
+        }
+        
+        job.meta['progress'] = 100
+        job.save_meta()
+        
+        return {
+            "status": "completed",
+            "message": "File upload and processing completed successfully",
+            "file_info": file_info
+        }
+        
+    except Exception as e:
+        error_msg = f"Error in upload task: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        job.meta['progress'] = 100
+        job.save_meta()
+        return {
+            "status": "error",
+            "message": error_msg
+        }
+    finally:
+        # Clean up the temporary file if it exists
+        if os.path.exists(file_path_or_url) and file_path_or_url.startswith('/tmp/'):
+            os.remove(file_path_or_url)
 class MultiQueueWorker:
     def __init__(self):
         setup_process()

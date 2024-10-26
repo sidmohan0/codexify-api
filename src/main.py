@@ -685,228 +685,168 @@ async def get_all_semantic_data_types(req: Request, token: str = None) -> AllSem
         logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@app.post("/documents",
-    summary="Get Embeddings for a Document",
-    description="""Extract text embeddings for a document. This endpoint supports plain text, .doc/.docx (MS Word), PDF files, images (using Tesseract OCR), and many other file types supported by the textract library.
-
-### Parameters:
-- `file`: The uploaded document file (either plain text, .doc/.docx, PDF, etc.).
-- `url`: URL of the document file to download (optional; in lieu of `file`).
-- `hash`: SHA3-256 hash of the document file to verify integrity (optional; in lieu of `file`).
-- `size`: Size of the document file in bytes to verify completeness (optional; in lieu of `file`).
-- `llm_model_name`: The model used to calculate embeddings (optional).
-- `embedding_pooling_method`: The method used to pool the embeddings (Choices: 'mean', 'mins_maxes', 'svd', 'svd_first_four', 'ica', 'factor_analysis', 'gaussian_random_projection'; default is 'mean').
-- `corpus_identifier_string`: An optional string identifier for grouping documents into a specific corpus.
-- `json_format`: The format of the JSON response (optional, see details below).
-- `send_back_json_or_zip_file`: Whether to return a JSON file or a ZIP file containing the embeddings file (optional, defaults to `zip`).
-- `query_text`: An optional query text to perform a semantic search with the same parameters used for the document embedding request.
-- `token`: Security token (optional).
-
-### JSON Format Options:
-The format of the JSON string returned by the endpoint (default is `records`; these are the options supported by the Pandas `to_json()` function):
-
-- `split` : dict like {`index` -> [index], `columns` -> [columns], `data` -> [values]}
-- `records` : list like [{column -> value}, … , {column -> value}]
-- `index` : dict like {index -> {column -> value}}
-- `columns` : dict like {column -> {index -> value}}
-- `values` : just the values array
-- `table` : dict like {`schema`: {schema}, `data`: {data}}
-
-### Examples:
-- Plain Text: Submit a file containing plain text.
-- MS Word: Submit a `.doc` or `.docx` file.
-- PDF: Submit a `.pdf` file.""",
-    response_description="Either a ZIP file containing the embeddings JSON file or a direct JSON response, depending on the value of `send_back_json_or_zip_file`.")
+@app.post("/documents", response_model=Dict[str, Any])
 async def upload_and_process_documents(
     file: UploadFile = File(None),
     url: str = Form(None),
     hash: str = Form(None),
     size: int = Form(None),
-    llm_model_name: str = DEFAULT_EMBEDDING_MODEL_NAME,
-    embedding_pooling_method: str = DEFAULT_EMBEDDING_POOLING_METHOD,
-    corpus_identifier_string: str = "", 
-    json_format: str = 'records',
-    send_back_json_or_zip_file: str = 'zip',
-    query_text: str = None,
-    token: str = None,
+    llm_model_name: str = Form(DEFAULT_EMBEDDING_MODEL_NAME),
+    embedding_pooling_method: str = Form(DEFAULT_EMBEDDING_POOLING_METHOD),
+    corpus_identifier_string: str = Form(""), 
+    json_format: str = Form('records'),
+    send_back_json_or_zip_file: str = Form('zip'),
+    query_text: str = Form(None),
+    token: str = Form(None),
     req: Request = None
-):
-    logger.info(f"Received request with embedding_pooling_method: {embedding_pooling_method}")
-    
-    client_ip = req.client.host if req else "localhost"
-    request_time = datetime.utcnow()
-    if file:
-        input_data_binary = await file.read()
-        result = magika.identify_bytes(input_data_binary)
-        detected_data_type = result.output.ct_label
-        temp_file = tempfile.NamedTemporaryFile(suffix=f".{detected_data_type}", delete=False)
-        temp_file_path = temp_file.name
-        logger.info(f"Temp file path: {temp_file_path}")
-        with open(temp_file_path, 'wb') as buffer:
-            buffer.write(input_data_binary)
-    elif url and hash and size:
-        temp_file_path = await download_file(url, size, hash)
-        with open(temp_file_path, 'rb') as f:
-            input_data_binary = f.read()
-            result = magika.identify_bytes(input_data_binary)
-            detected_data_type = result.output.ct_label
-            new_temp_file_path = temp_file_path + f".{detected_data_type}"
-            os.rename(temp_file_path, new_temp_file_path)
-            temp_file_path = new_temp_file_path
-    else:
-        raise HTTPException(status_code=400, detail="Invalid input. Provide either a file or URL with hash and size.")
+) -> Dict[str, Any]:
+    """
+    Upload and process documents for embedding extraction.
+    """
     try:
-        hash_obj = sha3_256()
-        with open(temp_file_path, 'rb') as buffer:
-            for chunk in iter(lambda: buffer.read(1024), b''):
-                hash_obj.update(chunk)
-        document_file_hash = hash_obj.hexdigest()
-        logger.info(f"SHA3-256 hash of submitted file: {document_file_hash}")
+        # Decode the URL if it's URL-encoded
+        decoded_url = unquote(url).strip('"') if url else None
+        logger.info(f"Processing document URL: {decoded_url}")
 
-        async with AsyncSessionLocal() as session:
-            result = await session.execute(select(DocumentEmbedding).filter(DocumentEmbedding.document_file_hash == document_file_hash))
-            existing_document = result.scalar_one_or_none()
-            if existing_document:
-                logger.info(f"Duplicate document detected: {document_file_hash}. Skipping processing.")
-                return JSONResponse(content={"message": "Duplicate document detected. This file has already been uploaded."}, status_code=200)
-
-        if corpus_identifier_string == "":
-            corpus_identifier_string = document_file_hash
-        unique_id = f"document_embedding_{document_file_hash}_{llm_model_name}_{embedding_pooling_method}"
-        # max_retries = 5
-        # for attempt in range(max_retries):
-            
-        #     wait_time = (2 ** attempt) + (random.randint(0, 1000) / 1000)
-        #     logger.warning(f"Attempt {attempt + 1}: Failed to acquire lock: {e}. Retrying in {wait_time:,.2f} seconds.")
-        #     await asyncio.sleep(wait_time)
+        # Create a unique job ID
+        timestamp = datetime.now().isoformat()
+        unique_id = hashlib.md5(f"{decoded_url or (file.filename if file else 'unknown')}_{timestamp}".encode()).hexdigest()
         
-        async with AsyncSessionLocal() as session:
-            result = await session.execute(select(DocumentEmbedding).filter(DocumentEmbedding.document_file_hash == document_file_hash, DocumentEmbedding.llm_model_name == llm_model_name, DocumentEmbedding.embedding_pooling_method == embedding_pooling_method))
-            existing_document_embedding = result.scalar_one_or_none()
-            if existing_document_embedding:
-                logger.info("Document has been processed before, returning existing result")
-                sentences = existing_document_embedding.sentences
-                document_embedding_results_json_compressed_binary = existing_document_embedding.document_embedding_results_json_compressed_binary
-                document_embedding_results_json_decompressed_binary = decompress_data(document_embedding_results_json_compressed_binary)
-                json_content = document_embedding_results_json_decompressed_binary.decode('utf-8')
-                if len(json_content) == 0:
-                    raise HTTPException(status_code=400, detail="Could not retrieve document embedding results.")
-                existing_document = 1
-                document_embedding_request = {}
-            else:
-                embeddings_computed = False
-                document_embedding_request = {}
-                existing_document = 0
-                with open(temp_file_path, 'rb') as f:
-                    input_data_binary = f.read()
-                result = magika.identify_bytes(input_data_binary)
-                mime_type = result.output.mime_type
-                sentences, thousands_of_input_words = await parse_submitted_document_file_into_sentence_strings_func(temp_file_path, mime_type)
-                document_embedding_request['mime_type'] = mime_type
-                document_embedding_request['filename'] = file.filename if file else os.path.basename(url)
-                document_embedding_request['sentences'] = sentences
-                document_embedding_request['total_number_of_sentences'] = len(sentences)
-                document_embedding_request['total_words'] = sum(len(sentence.split()) for sentence in sentences)
-                document_embedding_request['total_characters'] = sum(len(sentence) for sentence in sentences)
-                document_embedding_request['thousands_of_input_words'] = thousands_of_input_words
-                document_embedding_request['file_size_mb'] = os.path.getsize(temp_file_path) / (1024 * 1024)
-                document_embedding_request['corpus_identifier_string'] = corpus_identifier_string
-                document_embedding_request['embedding_pooling_method'] = embedding_pooling_method
-                document_embedding_request['llm_model_name'] = llm_model_name
-                document_embedding_request['document_file_hash'] = document_file_hash
-                if thousands_of_input_words > MAX_THOUSANDS_OF_WORDs_FOR_DOCUMENT_EMBEDDING:
-                    raise HTTPException(status_code=400, detail=f"Document contains ~{int(thousands_of_input_words*1000):,} words, more than the maximum of {MAX_THOUSANDS_OF_WORDs_FOR_DOCUMENT_EMBEDDING*1000:,} words, which would take too long to compute embeddings for. Please submit a smaller document.") 
-                first_10_words_of_input_text = ' '.join(' '.join(sentences).split()[:10])
-                logger.info(f"Received request to extract embeddings for document with MIME type: {mime_type} and size: {os.path.getsize(temp_file_path):,} bytes from IP address: {client_ip}; First 10 words of the document: '{first_10_words_of_input_text}...'")
-                logger.info(f"Document contains ~{int(thousands_of_input_words*1000):,} words, which is within the maximum of {MAX_THOUSANDS_OF_WORDs_FOR_DOCUMENT_EMBEDDING*1000:,} words. Proceeding with embedding computation using {llm_model_name} and pooling method {embedding_pooling_method}.") 
-                input_data = {
-                    "filename": file.filename if file else os.path.basename(url),
-                    "sentences": sentences,
-                    "file_size_mb": os.path.getsize(temp_file_path) / (1024 * 1024),
-                    "mime_type": mime_type
-                }
-                
+        # Check existing jobs using the global redis_manager
+        try:
+            document_processing_queue = redis_manager.get_queue('file_uploads')
+            existing_jobs = document_processing_queue.get_job_ids()
+            for job_id in existing_jobs:
                 try:
-                    if not embeddings_computed:
-                        json_content = await compute_embeddings_for_document(sentences=sentences, llm_model_name=llm_model_name, embedding_pooling_method=embedding_pooling_method, corpus_identifier_string=corpus_identifier_string, client_ip=client_ip, document_file_hash=document_file_hash, file=file, original_file_content=input_data_binary, json_format=json_format)
-                        logger.info(f"Done getting all regular embeddings for document containing {len(sentences):,} sentences with model {llm_model_name} and embedding pooling method {embedding_pooling_method} and corpus {corpus_identifier_string}")
-                        embeddings_computed = True
-                        logger.info(f"Done getting all regular embeddings for document containing {len(sentences):,} sentences with model {llm_model_name} and embedding pooling method {embedding_pooling_method} and corpus {corpus_identifier_string}")
-                    await store_document_embeddings_in_db(
-                        file=file,
-                        filename=document_embedding_request['filename'],
-                            document_file_hash=document_file_hash,
-                            original_file_content=input_data_binary,
-                        sentences=sentences,
-                        json_content=input_data_binary,
-                        llm_model_name=llm_model_name,
-                        embedding_pooling_method=embedding_pooling_method,
-                        corpus_identifier_string=corpus_identifier_string,
-                        client_ip=client_ip,
-                        request_time=request_time
-                    )
-                    await session.commit()
+                    job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+                    if job and job.args and job.args[0] == (decoded_url or (file.filename if file else 'unknown')) and job.get_status() != 'failed':
+                        return {
+                            "status": "already_queued",
+                            "message": f"Document processing already in progress. Job ID: {job_id}",
+                            "job_id": job_id
+                        }
+                except Exception as fetch_err:
+                    logger.warning(f"Error checking existing job {job_id}: {str(fetch_err)}")
+                    continue
+                    
+        except Exception as e:
+            logger.warning(f"Error checking existing jobs: {str(e)}")
+
+        # If a file was uploaded, save it to a temporary location
+        temp_file_path = None
+        if file:
+            temp_file_path = f"/tmp/{unique_id}_{file.filename}"
+            with open(temp_file_path, "wb") as temp_file:
+                temp_file.write(await file.read())
+
+        # Enqueue the new task using the global redis_manager
+        try:
+            job = document_processing_queue.enqueue(
+                'worker.upload_file_task',
+                args=(temp_file_path or decoded_url, hash, size, llm_model_name, embedding_pooling_method, corpus_identifier_string, json_format, send_back_json_or_zip_file, query_text),
+                job_id=unique_id,
+                result_ttl=86400,
+                failure_ttl=86400,
+                timeout='1h'
+            )
+            
+            if not job:
+                raise Exception("Job creation failed")
                 
-                except Exception as e:
-                    logger.error(f"Error while computing embeddings for document: {e}")
-                    traceback.print_exc()
-                    raise HTTPException(status_code=400, detail="Error while computing embeddings for document")
-                
-        if query_text:
-            use_advanced_semantic_search = 0
-            if use_advanced_semantic_search:
-                search_request = AdvancedSemanticSearchRequest(
-                    query_text=query_text,
-                    llm_model_name=llm_model_name,
-                    embedding_pooling_method=embedding_pooling_method,
-                    corpus_identifier_string=corpus_identifier_string,
-                    similarity_filter_percentage=0.01,
-                    result_sorting_metric="hoeffding_d",
-                    number_of_most_similar_strings_to_return=10
-                )
-                logger.info(f"Performing advanced semantic search for model {llm_model_name} and pooling method {embedding_pooling_method}...")
-                search_response = await advanced_semantic_search(search_request, req, token)
-                search_results = search_response["results"]
-            else:
-                search_request = SemanticSearchRequest(
-                    query_text=query_text,
-                    llm_model_name=llm_model_name,
-                    embedding_pooling_method=embedding_pooling_method,
-                    corpus_identifier_string=corpus_identifier_string,
-                    number_of_most_similar_strings_to_return=10
-                )
-                logger.info(f"Performing semantic search for model {llm_model_name} and pooling method {embedding_pooling_method}...")
-                search_response = await simple_semantic_search(search_request, req, token)
-                search_results = search_response["results"]
-            logger.info(f"Advanced semantic search completed. Results for query text '{query_text}'\n: {search_results}")
-            json_content_dict = {"document_embedding_request": document_embedding_request, "document_embedding_results": json.loads(json_content), "semantic_search_request": dict(search_request), "semantic_search_results": search_results} 
-            json_content = json.dumps(json_content_dict)
-        else:
-            json_content_dict = {"document_embedding_request": document_embedding_request, "document_embedding_results": json.loads(json_content)}
-            json_content = json.dumps(json_content_dict)                                
-        overall_total_time = (datetime.utcnow() - request_time).total_seconds()
-        json_content_length = len(json_content)
-        if json_content_length > 0:
-            if not existing_document:
-                logger.info(f"The response took {overall_total_time:,.2f} seconds to generate, or {float(overall_total_time / (thousands_of_input_words)):,.2f} seconds per thousand input tokens and {overall_total_time / (float(json_content_length) / 1000000.0):,.2f} seconds per million output characters.") 
-            if send_back_json_or_zip_file == 'json':
-                logger.info(f"Returning JSON response for document containing {len(sentences):,} sentences with model {llm_model_name}; first 100 characters out of {json_content_length:,} total of JSON response: {json_content[:100]}" if 'sentences' in locals() else f"Returning JSON response; first 100 characters out of {json_content_length:,} total of JSON response: {json_content[:100]}")
-                return JSONResponse(content=json.loads(json_content))
-            else:
-                original_filename_without_extension, _ = os.path.splitext(file.filename if file else os.path.basename(url))
-                json_file_path = f"/tmp/{original_filename_without_extension}.json"
-                with open(json_file_path, 'w') as json_file:
-                    json_file.write(json_content)
-                zip_file_path = f"/tmp/{original_filename_without_extension}.zip"
-                with zipfile.ZipFile(zip_file_path, 'w', compression=zipfile.ZIP_DEFLATED) as zipf:
-                    zipf.write(json_file_path, os.path.basename(json_file_path))
-                logger.info(f"Returning ZIP response for document containing {len(sentences):,} sentences with model {llm_model_name}; first 100 characters out of {json_content_length:,} total of JSON response: {json_content[:100]}")
-                return FileResponse(zip_file_path, headers={"Content-Disposition": f"attachment; filename={original_filename_without_extension}.zip"})
-    
+            logger.info(f"Job enqueued successfully. Job ID: {unique_id}")
+            
+            # Verify the job was enqueued
+            verification_attempts = 3
+            for attempt in range(verification_attempts):
+                try:
+                    enqueued_job = Job.fetch(unique_id, connection=redis_manager.redis_sync)
+                    if enqueued_job:
+                        return {
+                            "status": "queued",
+                            "message": f"Document processing queued successfully. Job ID: {unique_id}",
+                            "job_id": unique_id
+                        }
+                except Exception as fetch_err:
+                    if attempt == verification_attempts - 1:
+                        raise
+                    logger.warning(f"Verification attempt {attempt + 1} failed: {str(fetch_err)}")
+                    await asyncio.sleep(0.5)  # Wait briefly before retrying
+                    
+            raise Exception("Job verification failed after multiple attempts")
+            
+        except Exception as e:
+            logger.error(f"Failed to enqueue job: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to queue document processing: {str(e)}"
+            )
+
     except Exception as e:
-        logger.error(f"Error in processing: {e}")
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        error_msg = f"Failed to process document upload request: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+
+@app.get("/documents/status/{job_id}", response_model=Dict[str, Any])
+async def get_document_status(job_id: str) -> Dict[str, Any]:
+    """
+    Check the status of a document processing job
+    """
+    try:
+        job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+        
+        status_mapping = {
+            'queued': {'status': 'pending', 'message': 'Processing queued'},
+            'started': {'status': 'pending', 'message': 'Processing in progress'},
+            'finished': {'status': 'completed', 'result': job.result},
+            'failed': {'status': 'failed', 'error': str(job.exc_info)},
+            'stopped': {'status': 'stopped', 'message': 'Processing stopped'},
+            'deferred': {'status': 'pending', 'message': 'Processing deferred'}
+        }
+        
+        job_status = job.get_status()
+        return status_mapping.get(job_status, {
+            'status': 'unknown',
+            'message': f'Unknown job status: {job_status}'
+        })
+            
+    except Exception as e:
+        error_msg = f"Error fetching job status: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        return {
+            "status": "error",
+            "message": error_msg
+        }
+
+@app.get("/documents/jobs", response_model=Dict[str, Any])
+async def list_document_jobs() -> Dict[str, Any]:
+    """
+    List all document processing jobs and their statuses
+    """
+    try:
+        jobs = []
+        job_ids = Queue('file_uploads', connection=redis_manager.redis_sync).get_job_ids()
+        
+        for job_id in job_ids:
+            job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+            jobs.append({
+                'job_id': job_id,
+                'status': job.get_status(),
+                'created_at': job.created_at.isoformat() if job.created_at else None,
+                'document_info': job.args[0] if job.args else None
+            })
+            
+        return {
+            "status": "success",
+            "jobs": jobs
+        }
+        
+    except Exception as e:
+        error_msg = f"Error listing jobs: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
 
 @app.get("/documents", response_model=AllDocumentsResponse)
 async def get_all_documents(req: Request, token: str = None) -> AllDocumentsResponse:
