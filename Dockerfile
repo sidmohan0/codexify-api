@@ -61,7 +61,11 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
 # Upgrade pip and install wheel
 RUN python3.12 -m ensurepip --upgrade \
     && python3.12 -m pip install --upgrade pip \
-    && python3.12 -m pip install wheel
+    && python3.12 -m pip install wheel \
+    && python3.12 -m pip install --upgrade setuptools
+
+# Force reinstall blinker
+RUN python3.12 -m pip install --ignore-installed blinker
 
 # Copy only the requirements file first
 COPY requirements.txt .
