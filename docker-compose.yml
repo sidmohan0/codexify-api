@@ -1,18 +1,40 @@
-
 services:
-  api:
+  web:
     build: .
     ports:
       - "8089:8089"
+    command: uvicorn main:app --host 0.0.0.0 --port 8089
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - REDIS_PASSWORD=your_password
     depends_on:
       - redis
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8089 --workers 4
 
-  # redis:
-  #   image: redis:latest
-  #   ports:
-  #     - "6379:6379"
-  #   command: redis-server --appendonly yes
+  worker:
+    build: .
+    command: rq worker
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - REDIS_PASSWORD=your_password
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  api:
+    # ... your API service configuration ...
+    environment:
+      - REDIS_HOST=redis  # When using Docker, the host should be the service name
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

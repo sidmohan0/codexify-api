@@ -11,7 +11,7 @@ import threading
 import numpy as np
 import faiss
 import base64
-from typing import Optional
+from typing import Optional, Tuple, List, Dict, Any
 from pathlib import Path
 from typing import Any
 from db import AsyncSessionLocal
@@ -19,6 +19,9 @@ from sqlalchemy import select
 from collections import defaultdict
 from PIL import Image
 import logging
+from filelock import FileLock, Timeout
+import urllib
+
 logger = logging.getLogger(__name__)
 
 BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -332,3 +335,69 @@ def find_clip_model_path(llm_model_name: str) -> Optional[str]:
         return None
     return mmproj_files[0]    
 
+def add_model_url(new_url: str) -> str:
+    corrected_url = new_url
+    if '/blob/main/' in new_url:
+        corrected_url = new_url.replace('/blob/main/', '/resolve/main/')
+    json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
+    with open(json_path, "r") as f:
+        existing_urls = json.load(f)
+    if corrected_url not in existing_urls:
+        logger.info(f"Model URL not found in database. Adding {new_url} now...")
+        existing_urls.append(corrected_url)
+        with open(json_path, "w") as f:
+            json.dump(existing_urls, f)
+        logger.info(f"Model URL added: {new_url}")
+    else:
+        logger.info("Model URL already exists.")        
+    return corrected_url  
+
+def download_models() -> Tuple[List[str], List[Dict[str, str]]]:
+    download_status = []    
+    json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
+    if not os.path.exists(json_path):
+        initial_model_urls = [
+            "https://huggingface.co/NousResearch/Hermes-2-Theta-Llama-3-8B-GGUF/resolve/main/Hermes-2-Pro-Llama-3-Instruct-Merged-DPO-Q4_K_M.gguf",
+            "https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF/resolve/main/Meta-Llama-3-8B-Instruct.Q3_K_S.gguf",
+        ]
+        with open(json_path, "w") as f:
+            json.dump(initial_model_urls, f)
+    with open(json_path, "r") as f:
+        list_of_model_download_urls = json.load(f)
+    model_names = [os.path.basename(url) for url in list_of_model_download_urls]
+    current_file_path = os.path.abspath(__file__)
+    base_dir = os.path.dirname(current_file_path)
+    models_dir = os.path.join(base_dir, 'models')
+    logger.info("Checking models directory...")
+    
+    if not os.path.exists(models_dir):
+        os.makedirs(models_dir)
+        logger.info(f"Created models directory: {models_dir}")
+    else:
+        logger.info(f"Models directory exists: {models_dir}")
+    lock = FileLock(os.path.join(models_dir, "download.lock"))
+    for url, model_name_with_extension in zip(list_of_model_download_urls, model_names):
+        status = {"url": url, "status": "success", "message": "File already exists."}
+        filename = os.path.join(models_dir, model_name_with_extension)
+        try:
+            with lock.acquire(timeout=1200): # Wait up to 20 minutes for the file to be downloaded before returning failure
+                if not os.path.exists(filename):
+                    logger.info(f"Downloading model {model_name_with_extension} from {url}...")
+                    urllib.request.urlretrieve(url, filename)
+                    file_size = os.path.getsize(filename) / (1024 * 1024)  # Convert bytes to MB
+                    if file_size < 100:
+                        os.remove(filename)
+                        status["status"] = "failure"
+                        status["message"] = "Downloaded file is too small, probably not a valid model file."
+                    else:
+                        logger.info(f"Downloaded: {filename}")
+                else:
+                    logger.info(f"File already exists: {filename}")
+        except Timeout:
+            logger.warning(f"Could not acquire lock for downloading {model_name_with_extension}")
+            status["status"] = "failure"
+            status["message"] = "Could not acquire lock for downloading."
+        download_status.append(status)
+    
+    logger.info("Model downloads completed.")
+    return model_names, download_status

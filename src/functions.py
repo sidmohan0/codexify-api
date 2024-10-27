@@ -54,7 +54,10 @@ from typing import List, Tuple, Dict
 from fastapi import HTTPException
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from rq import Queue
-import logging
+from rq.job import Job
+from utils import download_models, add_model_url
+import urllib
+
 
 logger = logging.getLogger(__name__)
 
@@ -213,56 +216,7 @@ async def initialize_globals():
     # document_scans_queue = redis_manager.get_queue('document_scans')
 
     
-def download_models() -> Tuple[List[str], List[Dict[str, str]]]:
-    download_status = []    
-    json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
-    if not os.path.exists(json_path):
-        initial_model_urls = [
-            "https://huggingface.co/NousResearch/Hermes-2-Theta-Llama-3-8B-GGUF/resolve/main/Hermes-2-Pro-Llama-3-Instruct-Merged-DPO-Q4_K_M.gguf",
-            "https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF/resolve/main/Meta-Llama-3-8B-Instruct.Q3_K_S.gguf",
-            "https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf"
-        ]
-        with open(json_path, "w") as f:
-            json.dump(initial_model_urls, f)
-    with open(json_path, "r") as f:
-        list_of_model_download_urls = json.load(f)
-    model_names = [os.path.basename(url) for url in list_of_model_download_urls]
-    current_file_path = os.path.abspath(__file__)
-    base_dir = os.path.dirname(current_file_path)
-    models_dir = os.path.join(base_dir, 'models')
-    logger.info("Checking models directory...")
-    
-    if not os.path.exists(models_dir):
-        os.makedirs(models_dir)
-        logger.info(f"Created models directory: {models_dir}")
-    else:
-        logger.info(f"Models directory exists: {models_dir}")
-    lock = FileLock(os.path.join(models_dir, "download.lock"))
-    for url, model_name_with_extension in zip(list_of_model_download_urls, model_names):
-        status = {"url": url, "status": "success", "message": "File already exists."}
-        filename = os.path.join(models_dir, model_name_with_extension)
-        try:
-            with lock.acquire(timeout=1200): # Wait up to 20 minutes for the file to be downloaded before returning failure
-                if not os.path.exists(filename):
-                    logger.info(f"Downloading model {model_name_with_extension} from {url}...")
-                    urllib.request.urlretrieve(url, filename)
-                    file_size = os.path.getsize(filename) / (1024 * 1024)  # Convert bytes to MB
-                    if file_size < 100:
-                        os.remove(filename)
-                        status["status"] = "failure"
-                        status["message"] = "Downloaded file is too small, probably not a valid model file."
-                    else:
-                        logger.info(f"Downloaded: {filename}")
-                else:
-                    logger.info(f"File already exists: {filename}")
-        except Timeout:
-            logger.warning(f"Could not acquire lock for downloading {model_name_with_extension}")
-            status["status"] = "failure"
-            status["message"] = "Could not acquire lock for downloading."
-        download_status.append(status)
-    
-    logger.info("Model downloads completed.")
-    return model_names, download_status
+
 
 def load_model(llm_model_name: str, raise_http_exception: bool = True):
     global USE_VERBOSE
@@ -307,7 +261,7 @@ logger = logging.getLogger(__name__)
 magika = Magika()
 db_writer = None
 
-CODEXIFY_API_SERVER_LISTEN_PORT = int(os.getenv("CODEXIFY_API_SERVER_LISTEN_PORT", "8080"))
+CODEXIFY_API_SERVER_LISTEN_PORT = int(os.getenv("CODEXIFY_API_SERVER_LISTEN_PORT", "8089"))
 DEFAULT_LLM_NAME = os.getenv("DEFAULT_LLM_NAME", "openchat_v3.2_super")
 LLM_CONTEXT_SIZE_IN_TOKENS = int(os.getenv("LLM_CONTEXT_SIZE_IN_TOKENS", "512"))
 TEXT_COMPLETION_CONTEXT_SIZE_IN_TOKENS = int(os.getenv("TEXT_COMPLETION_CONTEXT_SIZE_IN_TOKENS", "4000"))
@@ -368,22 +322,22 @@ def compress_data(input_data):
 def decompress_data(compressed_data):
     return zstd.decompress(compressed_data)
 
-def add_model_url(new_url: str) -> str:
-    corrected_url = new_url
-    if '/blob/main/' in new_url:
-        corrected_url = new_url.replace('/blob/main/', '/resolve/main/')
-    json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
-    with open(json_path, "r") as f:
-        existing_urls = json.load(f)
-    if corrected_url not in existing_urls:
-        logger.info(f"Model URL not found in database. Adding {new_url} now...")
-        existing_urls.append(corrected_url)
-        with open(json_path, "w") as f:
-            json.dump(existing_urls, f)
-        logger.info(f"Model URL added: {new_url}")
-    else:
-        logger.info("Model URL already exists.")        
-    return corrected_url  
+# def add_model_url(new_url: str) -> str:
+#     corrected_url = new_url
+#     if '/blob/main/' in new_url:
+#         corrected_url = new_url.replace('/blob/main/', '/resolve/main/')
+#     json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
+#     with open(json_path, "r") as f:
+#         existing_urls = json.load(f)
+#     if corrected_url not in existing_urls:
+#         logger.info(f"Model URL not found in database. Adding {new_url} now...")
+#         existing_urls.append(corrected_url)
+#         with open(json_path, "w") as f:
+#             json.dump(existing_urls, f)
+#         logger.info(f"Model URL added: {new_url}")
+#     else:
+#         logger.info("Model URL already exists.")        
+#     return corrected_url  
 
 async def get_embedding_from_db(text: str, llm_model_name: str, embedding_pooling_method: str):
     text_hash = sha3_256(text.encode('utf-8')).hexdigest()
@@ -802,5 +756,17 @@ def remove_pagination_breaks(text: str) -> str:
 def truncate_string(s: str, max_length: int = 100) -> str:
     return s[:max_length]
 
+def enqueue_model_download(model_url: str):
+    queue = redis_manager.get_queue('model_downloads')
+    job = queue.enqueue(download_model_task, model_url)
+    return job.id
 
+def get_job_status(job_id: str):
+    job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+    if job.is_finished:
+        return {"status": "completed", "result": job.result, "progress": 100}
+    elif job.is_failed:
+        return {"status": "failed", "error": str(job.exc_info), "progress": 100}
+    else:
+        return {"status": "in_progress", "progress": job.meta.get('progress', 0)}
 
