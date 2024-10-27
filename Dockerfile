@@ -45,6 +45,7 @@ RUN apt-get update \
     libjpeg-dev \
     swig \
     curl \
+    redis-server \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -73,10 +74,21 @@ COPY requirements.txt .
 # Install dependencies using pip
 RUN python3.12 -m pip install --no-cache-dir -r requirements.txt
 
-# Now copy the rest of the application into the container
-COPY . .
+# Copy the .env file
+COPY .env .
+
+# Copy the rest of the application
+COPY src/ ./src/
+
+# Set the Python path to include the src directory
+ENV PYTHONPATH=/app/src
 
 # Expose the port the app runs on
-EXPOSE 8089
+EXPOSE 8089 6379
 
-# The command to run the application is now in docker-compose.yml
+# Set the working directory
+WORKDIR /app
+
+# Command to run the application
+# Start Redis server and then run the application
+CMD redis-server & uvicorn src.main:app --host 0.0.0.0 --port 8089 --workers 4
