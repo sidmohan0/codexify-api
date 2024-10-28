@@ -26,3 +26,7 @@ src/models/
 *.pdf
 *.docx
 *.doc
+
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

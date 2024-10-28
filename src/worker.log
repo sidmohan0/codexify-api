@@ -7358,3 +7358,133 @@ TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneT
 2024-10-28 09:00:49,071 - rq.scheduler - INFO - Scheduler stopping, releasing locks for document_scans, model_downloads, file_uploads...
 2024-10-28 09:00:49,111 - rq.scheduler - INFO - Scheduler with PID 6973 has stopped
 2024-10-28 09:00:49,630 - rq.worker - INFO - Unsubscribing from channel rq:pubsub:worker-6971
+2024-10-28 12:34:16,781 - main - INFO - Starting application initialization
+2024-10-28 12:34:16,783 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-28 12:44:11,850 - __main__ - INFO - Initializing worker...
+2024-10-28 12:44:11,851 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-28 12:44:11,864 - __main__ - INFO - Worker started successfully with PID: 46337
+2024-10-28 12:44:14,087 - __mp_main__ - INFO - Connecting to Redis at localhost:6379
+2024-10-28 12:44:14,089 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-28 12:44:14,089 - __mp_main__ - ERROR - Redis connection error: the greenlet library is required to use this function. No module named 'greenlet'
+2024-10-28 12:44:31,830 - __main__ - INFO - Initializing worker...
+2024-10-28 12:44:31,830 - __main__ - INFO - Worker listening to queues: ['model_downloads', 'file_uploads', 'document_scans']
+2024-10-28 12:44:31,839 - __main__ - INFO - Worker started successfully with PID: 46460
+2024-10-28 12:44:34,065 - __mp_main__ - INFO - Connecting to Redis at localhost:6379
+2024-10-28 12:44:34,067 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-28 12:44:34,072 - db - INFO - Database initialization completed.
+2024-10-28 12:44:34,085 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 29; Took 0.013674 seconds, for an average of 0.0004715172413793104 seconds per hash.
+2024-10-28 12:44:34,086 - utils - INFO - Checking models directory...
+2024-10-28 12:44:34,086 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify/backend/src/models
+2024-10-28 12:44:34,086 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-28 12:44:34,086 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-28 12:44:34,087 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/bge-m3-q8_0.gguf
+2024-10-28 12:44:34,087 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-28 12:44:34,087 - utils - INFO - Model downloads completed.
+2024-10-28 12:44:34,093 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-28 12:44:34,109 - rq.worker - INFO - Worker rq:worker:worker-46460 started with PID 46460, version 1.16.2
+2024-10-28 12:44:34,109 - rq.worker - INFO - Subscribing to channel rq:pubsub:worker-46460
+2024-10-28 12:44:34,114 - rq.worker - INFO - *** Listening on [32mmodel_downloads, file_uploads, document_scans[39;49;00m...
+2024-10-28 12:44:34,125 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 12:44:34,145 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 12:44:34,146 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 12:44:36,341 - rq.scheduler - INFO - Scheduler for model_downloads, document_scans, file_uploads started with PID 46467
+2024-10-28 12:46:58,083 - main - INFO - Starting application initialization
+2024-10-28 12:46:58,084 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-28 12:46:58,090 - db - INFO - Database initialization completed.
+2024-10-28 12:46:58,105 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 29; Took 0.014955 seconds, for an average of 0.0005156896551724138 seconds per hash.
+2024-10-28 12:46:58,106 - utils - INFO - Checking models directory...
+2024-10-28 12:46:58,106 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify/backend/src/models
+2024-10-28 12:46:58,106 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-28 12:46:58,106 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-28 12:46:58,106 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/bge-m3-q8_0.gguf
+2024-10-28 12:46:58,106 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-28 12:46:58,106 - utils - INFO - Model downloads completed.
+2024-10-28 12:46:58,112 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-28 12:46:58,113 - main - INFO - Application initialization complete
+2024-10-28 12:52:56,147 - main - INFO - Starting application initialization
+2024-10-28 12:52:56,148 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-28 12:52:56,153 - db - INFO - Database initialization completed.
+2024-10-28 12:52:56,166 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 29; Took 0.012349 seconds, for an average of 0.0004258275862068966 seconds per hash.
+2024-10-28 12:52:56,166 - utils - INFO - Checking models directory...
+2024-10-28 12:52:56,166 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify/backend/src/models
+2024-10-28 12:52:56,167 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-28 12:52:56,167 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-28 12:52:56,167 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/bge-m3-q8_0.gguf
+2024-10-28 12:52:56,167 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-28 12:52:56,167 - utils - INFO - Model downloads completed.
+2024-10-28 12:52:56,173 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-28 12:52:56,174 - main - INFO - Application initialization complete
+2024-10-28 12:53:18,756 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:53:18,757 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:53:18,760 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:53:18,761 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:53:18,761 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:53:18,761 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:53:23,156 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:53:23,157 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:53:23,187 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:53:23,194 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:53:23,196 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:53:23,196 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:53:28,576 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:53:28,576 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:53:28,582 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:53:28,582 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:53:28,604 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:53:28,612 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:53:39,601 - main - INFO - Retrieving content for document with document_hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-28 12:53:39,611 - main - INFO - Retrieved content for document with document_hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-28 12:53:43,151 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:53:43,152 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:53:43,153 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:53:43,153 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:53:43,154 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:53:43,154 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:53:43,759 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:53:43,759 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:53:43,761 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:53:43,761 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:53:43,784 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:53:43,785 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:53:46,497 - main - INFO - Retrieving content for document with document_hash: string
+2024-10-28 12:53:46,504 - main - INFO - Retrieved content for document with document_hash: string
+2024-10-28 12:53:50,317 - main - INFO - Scan job enqueued successfully. Job ID: fb7bf53e489d8efaa024dd37d11f3c4f
+2024-10-28 12:53:50,323 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mworker.scan_document_task('', 'nomic-embed-text-v1.5.Q6_K', 'mean', '', 0.01, 10, 'hoeffding_d')[39;49;00m (fb7bf53e489d8efaa024dd37d11f3c4f)
+2024-10-28 12:53:50,382 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-28 12:53:50,400 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mJob OK[39;49;00m (fb7bf53e489d8efaa024dd37d11f3c4f)
+2024-10-28 12:53:50,401 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-28 12:54:01,367 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:54:01,367 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:54:01,385 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:54:01,402 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:54:01,404 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:54:01,404 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:54:02,731 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:54:02,731 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:54:02,732 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:54:02,732 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:54:02,752 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:54:02,753 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:54:04,323 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:54:04,324 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:54:04,325 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:54:04,325 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:54:04,347 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:54:04,350 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:56:12,934 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:56:12,937 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:56:12,940 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:56:12,941 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:56:12,942 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:56:12,942 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:56:17,176 - main - INFO - Received request to retrieve all stored documents
+2024-10-28 12:56:17,176 - main - INFO - Retrieving all stored documents from the database
+2024-10-28 12:56:17,205 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-28 12:56:17,211 - main - INFO - Retrieving all semantic data types from the database
+2024-10-28 12:56:17,214 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-28 12:56:17,214 - main - INFO - Processed 1 semantic data types
+2024-10-28 12:59:23,507 - rq.worker - INFO - Worker worker-46460 [PID 46460]: warm shut down requested
+2024-10-28 12:59:23,507 - __main__ - INFO - Worker stopped by user
+2024-10-28 12:59:24,079 - rq.scheduler - INFO - Scheduler stopping, releasing locks for model_downloads, document_scans, file_uploads...
+2024-10-28 12:59:24,088 - rq.scheduler - INFO - Scheduler with PID 46467 has stopped
+2024-10-28 12:59:24,550 - rq.worker - INFO - Unsubscribing from channel rq:pubsub:worker-46460

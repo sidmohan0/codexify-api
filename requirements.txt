@@ -31,3 +31,4 @@ uvicorn
 uvloop
 zstandard
 rq==1.10.1
+greenlet
