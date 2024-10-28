@@ -102,7 +102,12 @@ DEFAULT_EMBEDDING_POOLING_METHOD=mean
    uvicorn main:app --host 0.0.0.0 --port 8089
    ```
 
-5. **Access the API documentation**
+5. **Start the worker**
+   ```bash
+   python src/worker.py
+   ```
+
+6. **Access the API documentation**
    - Open `http://localhost:8089` in your browser
    - The Swagger UI provides interactive API documentation
 
@@ -116,3 +121,15 @@ DEFAULT_EMBEDDING_POOLING_METHOD=mean
 
 ## 📞 Support
 For any questions or support, please contact hi@datafog.ai 
+
+
+## Acknowledgements
+
+The design and implementation pattern was inspired by this great project: https://github.com/Dicklesworthstone/swiss_army_llama by Github User Dicklesworthstone.
+
+While the original project provided the foundation for semantic search functionality, this repository includes significant modifications and new features including:
+- Environment variable configuration
+- Refactored architecture
+- Migration from Redis device locks to Redis queue workers
+- New endpoints for custom dictionary creation
+- New worker implementation for document scanning and semantic search
