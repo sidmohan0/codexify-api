@@ -22,3 +22,7 @@ src/models/
 *.log.*
 *.rdb
 *.db
+
+*.pdf
+*.docx
+*.doc
