@@ -1,6 +1,8 @@
 # Codexify
 
-Codexify is a powerful FastAPI-based application that enables semantic search and document processing with custom semantic data types. It provides capabilities for document embedding, similarity search, and semantic type management.
+Codexify is a powerful open-source FastAPI-based application that enables semantic search and document processing with custom semantic data types. It provides capabilities for document embedding, similarity search, and semantic type management.
+
+[![Docker Image](https://img.shields.io/docker/v/sidmo88/codexify-api/latest?label=Docker%20Image)](https://hub.docker.com/r/sidmo88/codexify-api)
 
 ## 🚀 Features
 
