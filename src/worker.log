@@ -6677,3 +6677,684 @@ NameError: name 'urllib' is not defined. Did you forget to import 'urllib'
 2024-10-27 13:34:46,478 - worker - INFO - Downloading model from https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-gguf/resolve/main/llava-llama-3-8b-v1_1-int4.gguf
 2024-10-27 13:36:44,363 - rq.worker - INFO - [32mmodel_downloads[39;49;00m: [34mJob OK[39;49;00m (f5703c84282ef486a8e27f4c7d1dcefe)
 2024-10-27 13:36:44,366 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 13:38:46,383 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:38:46,384 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:38:46,402 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:38:46,411 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:38:46,411 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:38:46,415 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:38:57,127 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:38:57,128 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:38:57,134 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:38:57,156 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 13:38:57,159 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 13:38:57,160 - main - INFO - Processed 1 semantic data types
+2024-10-27 13:39:49,134 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:39:49,135 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:39:49,153 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 13:39:49,161 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 13:39:49,161 - main - INFO - Processed 1 semantic data types
+2024-10-27 13:39:49,164 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:39:56,178 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 13:39:56,184 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 13:39:56,184 - main - INFO - Processed 1 semantic data types
+2024-10-27 13:39:56,187 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 13:39:56,188 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 13:39:56,188 - main - INFO - Processed 1 semantic data types
+2024-10-27 13:39:58,684 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:39:58,684 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:39:58,690 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:39:58,697 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:39:58,697 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:39:58,703 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:41:17,593 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 13:41:17,594 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 13:41:17,605 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 13:41:17,621 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 13:41:17,623 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 13:41:17,623 - main - INFO - Processed 1 semantic data types
+2024-10-27 13:43:29,487 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 13:43:29,492 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 13:43:29,493 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 13:56:59,626 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 13:56:59,630 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 13:56:59,631 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 14:10:05,668 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:10:05,669 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:10:05,681 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 14:10:05,693 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 14:10:05,696 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 14:10:05,696 - main - INFO - Processed 1 semantic data types
+2024-10-27 14:10:29,714 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 14:10:29,719 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 14:10:29,721 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 14:20:16,639 - main - INFO - Application shutdown initiated
+2024-10-27 14:20:18,535 - main - INFO - Starting application initialization
+2024-10-27 14:20:18,538 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:20:18,543 - db - INFO - Database initialization completed.
+2024-10-27 14:20:18,554 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 26; Took 0.011494 seconds, for an average of 0.0004420769230769231 seconds per hash.
+2024-10-27 14:20:18,555 - utils - INFO - Checking models directory...
+2024-10-27 14:20:18,555 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:20:18,555 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:20:18,555 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:20:18,556 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:20:18,556 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:20:18,556 - utils - INFO - Model downloads completed.
+2024-10-27 14:20:18,562 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:20:18,563 - main - INFO - Application initialization complete
+2024-10-27 14:20:38,577 - main - INFO - Application shutdown initiated
+2024-10-27 14:20:40,260 - main - INFO - Starting application initialization
+2024-10-27 14:20:40,262 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:20:40,266 - db - INFO - Database initialization completed.
+2024-10-27 14:20:40,277 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 26; Took 0.01075 seconds, for an average of 0.00041346153846153844 seconds per hash.
+2024-10-27 14:20:40,277 - utils - INFO - Checking models directory...
+2024-10-27 14:20:40,277 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:20:40,277 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:20:40,278 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:20:40,278 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:20:40,278 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:20:40,278 - utils - INFO - Model downloads completed.
+2024-10-27 14:20:40,284 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:20:40,285 - main - INFO - Application initialization complete
+2024-10-27 14:21:03,236 - main - INFO - Application shutdown initiated
+2024-10-27 14:21:04,518 - main - INFO - Starting application initialization
+2024-10-27 14:21:04,519 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:21:04,523 - db - INFO - Database initialization completed.
+2024-10-27 14:21:04,533 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 26; Took 0.009684 seconds, for an average of 0.00037246153846153847 seconds per hash.
+2024-10-27 14:21:04,533 - utils - INFO - Checking models directory...
+2024-10-27 14:21:04,533 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:21:04,534 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:21:04,534 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:21:04,534 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:21:04,534 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:21:04,534 - utils - INFO - Model downloads completed.
+2024-10-27 14:21:04,539 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:21:04,540 - main - INFO - Application initialization complete
+2024-10-27 14:21:29,407 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:21:29,408 - main - INFO - Received request to find most similar strings for query text: `my social security number is asdfasdfasdfasd` using model: nomic-embed-text-v1.5.Q6_K
+2024-10-27 14:21:29,409 - main - INFO - Computing embedding for input text: my social security number is asdfasdfasdfasd
+2024-10-27 14:21:29,409 - functions - INFO - Received request for embedding for 'my social security number is asdfasdfasdfasd' using model 'nomic-embed-text-v1.5.Q6_K' and embedding pooling method 'mean' from IP address '127.0.0.1'
+2024-10-27 14:21:29,938 - functions - INFO - Sentence 1 of 1 has 1 embeddings for text 'my social security number is asdfasdfasdfasd...'
+2024-10-27 14:21:29,939 - functions - INFO - Calculated 768-dimensional embeddings (relative to the underlying token embedding dimensions of 768) for 1 sentences in a total of 0.5 seconds.
+2024-10-27 14:21:29,939 - functions - INFO - That's an average of 484.84 ms per sentence and 2.063 sentences per second (and 0.0908 total characters per ms) using pooling method 'mean'
+2024-10-27 14:21:29,939 - functions - INFO - Embedding calculated for 'my social security number is asdfasdfasdfasd' using model 'nomic-embed-text-v1.5.Q6_K' and embedding pooling method 'mean' in 0.00 seconds, or an average of 0.00 seconds per word. Now saving to database...
+2024-10-27 14:21:29,940 - main - INFO - Computed embedding for input text: my social security number is asdfasdfasdfasd
+2024-10-27 14:21:29,959 - main - INFO - Finished advanced search in 0.558281 seconds. Found 1 results.
+2024-10-27 14:23:39,841 - main - INFO - Application shutdown initiated
+2024-10-27 14:23:59,785 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 14:23:59,788 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 14:23:59,790 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 14:25:28,909 - main - INFO - Starting application initialization
+2024-10-27 14:25:28,912 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:25:28,916 - db - INFO - Database initialization completed.
+2024-10-27 14:25:28,927 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 27; Took 0.010884 seconds, for an average of 0.0004031111111111111 seconds per hash.
+2024-10-27 14:25:28,927 - utils - INFO - Checking models directory...
+2024-10-27 14:25:28,927 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:25:28,927 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:25:28,927 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:25:28,927 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:25:28,928 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:25:28,928 - utils - INFO - Model downloads completed.
+2024-10-27 14:25:28,934 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:25:28,935 - main - INFO - Application initialization complete
+2024-10-27 14:25:35,198 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:25:35,199 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:25:35,205 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 14:25:35,206 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:25:35,206 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:25:35,209 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 14:25:51,742 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:25:51,743 - main - INFO - Received request to find most similar strings for query text: `my social security number is asdfasdfasdfasd` using model: nomic-embed-text-v1.5.Q6_K
+2024-10-27 14:25:51,743 - main - INFO - Computing embedding for input text: my social security number is asdfasdfasdfasd
+2024-10-27 14:25:51,743 - functions - INFO - Received request for embedding for 'my social security number is asdfasdfasdfasd' using model 'nomic-embed-text-v1.5.Q6_K' and embedding pooling method 'mean' from IP address '127.0.0.1'
+2024-10-27 14:25:51,746 - functions - INFO - Embedding found in database for 'my social security number is asdfasdfasdfasd' using model 'nomic-embed-text-v1.5.Q6_K' and embedding pooling method 'mean'; returning in 0.0026 seconds
+2024-10-27 14:25:51,746 - main - INFO - Computed embedding for input text: my social security number is asdfasdfasdfasd
+2024-10-27 14:25:51,768 - main - INFO - Finished advanced search in 0.034495 seconds. Found 2 results.
+2024-10-27 14:27:39,732 - main - INFO - Application shutdown initiated
+2024-10-27 14:27:41,425 - main - INFO - Starting application initialization
+2024-10-27 14:27:41,426 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:27:41,431 - db - INFO - Database initialization completed.
+2024-10-27 14:27:41,442 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 27; Took 0.011309 seconds, for an average of 0.00041885185185185184 seconds per hash.
+2024-10-27 14:27:41,443 - utils - INFO - Checking models directory...
+2024-10-27 14:27:41,443 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:27:41,443 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:27:41,443 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:27:41,443 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:27:41,443 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:27:41,443 - utils - INFO - Model downloads completed.
+2024-10-27 14:27:41,450 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:27:41,452 - main - INFO - Application initialization complete
+2024-10-27 14:33:54,558 - main - INFO - Application shutdown initiated
+2024-10-27 14:33:56,246 - main - INFO - Starting application initialization
+2024-10-27 14:33:56,247 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:33:56,253 - db - INFO - Database initialization completed.
+2024-10-27 14:33:56,263 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 27; Took 0.010254 seconds, for an average of 0.00037977777777777776 seconds per hash.
+2024-10-27 14:33:56,263 - utils - INFO - Checking models directory...
+2024-10-27 14:33:56,264 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:33:56,264 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:33:56,264 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:33:56,264 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:33:56,264 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:33:56,264 - utils - INFO - Model downloads completed.
+2024-10-27 14:33:56,271 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:33:56,273 - main - INFO - Application initialization complete
+2024-10-27 14:34:29,227 - main - INFO - Scan job enqueued successfully. Job ID: 8865a9f2760064c83602f8a07232eb6f
+2024-10-27 14:34:29,229 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mworker.scan_document_task('my passport number is 01123342523524', 'nomic-embed-text-v1.5.Q6_K', 'mean', '', 0.01, 10, 'hoeffding_d')[39;49;00m (8865a9f2760064c83602f8a07232eb6f)
+2024-10-27 14:34:29,272 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:34:29,275 - worker - ERROR - Error in scan_document_task: 'AdvancedSemanticSearchRequest' object has no attribute 'results'
+2024-10-27 14:34:29,279 - worker - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 324, in scan_document_task
+    results=request.results  # Your search results from the existing implementation
+            ^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/pydantic/main.py", line 856, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'AdvancedSemanticSearchRequest' object has no attribute 'results'
+
+2024-10-27 14:34:29,282 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mJob OK[39;49;00m (8865a9f2760064c83602f8a07232eb6f)
+2024-10-27 14:34:29,283 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 14:34:29,289 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 14:34:29,290 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 14:34:29,291 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 14:34:59,300 - main - INFO - Application shutdown initiated
+2024-10-27 14:35:00,966 - main - INFO - Starting application initialization
+2024-10-27 14:35:00,968 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:35:00,972 - db - INFO - Database initialization completed.
+2024-10-27 14:35:00,983 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 27; Took 0.010668 seconds, for an average of 0.0003951111111111111 seconds per hash.
+2024-10-27 14:35:00,983 - utils - INFO - Checking models directory...
+2024-10-27 14:35:00,983 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:35:00,983 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:35:00,984 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:35:00,984 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:35:00,984 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:35:00,984 - utils - INFO - Model downloads completed.
+2024-10-27 14:35:00,991 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:35:00,992 - main - INFO - Application initialization complete
+2024-10-27 14:35:08,382 - main - INFO - Scan job enqueued successfully. Job ID: 840da4032432115b620bf10612f5b701
+2024-10-27 14:35:08,382 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mworker.scan_document_task('my passport number is 01123342523524', 'nomic-embed-text-v1.5.Q6_K', 'mean', '', 0.01, 10, 'hoeffding_d')[39;49;00m (840da4032432115b620bf10612f5b701)
+2024-10-27 14:35:08,418 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:35:08,421 - worker - ERROR - Error in scan_document_task: 1 validation error for AdvancedSemanticSearchResponse
+results
+  Field required [type=missing, input_value={'query_text': 'my passpo...pooling_method': 'mean'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.9/v/missing
+2024-10-27 14:35:08,424 - worker - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 320, in scan_document_task
+    return AdvancedSemanticSearchResponse(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/pydantic/main.py", line 212, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for AdvancedSemanticSearchResponse
+results
+  Field required [type=missing, input_value={'query_text': 'my passpo...pooling_method': 'mean'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.9/v/missing
+
+2024-10-27 14:35:08,429 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mJob OK[39;49;00m (840da4032432115b620bf10612f5b701)
+2024-10-27 14:35:08,430 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 14:35:47,807 - main - INFO - Application shutdown initiated
+2024-10-27 14:35:49,482 - main - INFO - Starting application initialization
+2024-10-27 14:35:49,485 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:35:49,491 - db - INFO - Database initialization completed.
+2024-10-27 14:35:49,502 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 27; Took 0.010949 seconds, for an average of 0.00040551851851851854 seconds per hash.
+2024-10-27 14:35:49,502 - utils - INFO - Checking models directory...
+2024-10-27 14:35:49,502 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:35:49,502 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:35:49,502 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:35:49,502 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:35:49,503 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:35:49,503 - utils - INFO - Model downloads completed.
+2024-10-27 14:35:49,509 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:35:49,510 - main - INFO - Application initialization complete
+2024-10-27 14:35:54,825 - main - INFO - Scan job enqueued successfully. Job ID: 6a18b366d13981561c6359059c721f65
+2024-10-27 14:35:54,825 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mworker.scan_document_task('my passport number is 01123342523524', 'nomic-embed-text-v1.5.Q6_K', 'mean', '', 0.01, 10, 'hoeffding_d')[39;49;00m (6a18b366d13981561c6359059c721f65)
+2024-10-27 14:35:54,860 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 14:35:54,865 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mJob OK[39;49;00m (6a18b366d13981561c6359059c721f65)
+2024-10-27 14:35:54,866 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 14:49:24,991 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 14:49:24,998 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 14:49:25,000 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 14:52:12,860 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:52:12,865 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:52:12,897 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 14:52:12,899 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:52:12,900 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:52:12,911 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 14:52:23,618 - main - INFO - Processing document URL: None
+2024-10-27 14:52:23,621 - main - INFO - Job enqueued successfully. Job ID: a5a6ce8d854baeed85e3fdf16b223888
+2024-10-27 14:52:23,622 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mworker.upload_file_task('/tmp/a5a6ce8d854baeed85e3fdf16b223888_2019-Sherlock-KDD.pdf', None, None, 'nomic-embed-text-v1.5.Q6_K', 'mean', 'default_codex', 'records', 'zip', None)[39;49;00m (a5a6ce8d854baeed85e3fdf16b223888)
+2024-10-27 14:52:23,658 - worker - INFO - Starting file upload task for file: /tmp/a5a6ce8d854baeed85e3fdf16b223888_2019-Sherlock-KDD.pdf
+2024-10-27 14:52:23,660 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:52:23,662 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:52:23,667 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:52:23,673 - main - INFO - Retrieved 4 stored documents from the database
+2024-10-27 14:52:23,674 - db - INFO - Database initialization completed.
+2024-10-27 14:52:23,685 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 27; Took 0.010577 seconds, for an average of 0.00039174074074074073 seconds per hash.
+2024-10-27 14:52:23,686 - utils - INFO - Checking models directory...
+2024-10-27 14:52:23,687 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:52:23,694 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:52:23,695 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:52:23,695 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:52:23,696 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:52:23,697 - utils - INFO - Model downloads completed.
+2024-10-27 14:52:24,468 - worker - INFO - Successfully saved document and embedding with hash: 53b0db0c450998a83a7e219c62ed812fd6d307803b932e3333e2d9ad745fee08
+2024-10-27 14:52:24,471 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mJob OK[39;49;00m (a5a6ce8d854baeed85e3fdf16b223888)
+2024-10-27 14:52:24,471 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 14:52:32,933 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:52:32,933 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:52:32,945 - main - INFO - Retrieved 5 stored documents from the database
+2024-10-27 14:52:32,948 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:52:32,948 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:52:32,959 - main - INFO - Retrieved 5 stored documents from the database
+2024-10-27 14:54:14,798 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:54:14,799 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:54:14,829 - main - INFO - Retrieved 5 stored documents from the database
+2024-10-27 14:54:14,831 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:54:14,831 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:54:14,846 - main - INFO - Retrieved 5 stored documents from the database
+2024-10-27 14:54:47,840 - main - INFO - Processing document URL: None
+2024-10-27 14:54:47,844 - main - INFO - Job enqueued successfully. Job ID: 43d9c0e1c9466944e0821be41fd3b678
+2024-10-27 14:54:47,846 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mworker.upload_file_task('/tmp/43d9c0e1c9466944e0821be41fd3b678_2019-Sherlock-KDD.pdf', None, None, 'nomic-embed-text-v1.5.Q6_K', 'mean', 'default_codex', 'records', 'zip', None)[39;49;00m (43d9c0e1c9466944e0821be41fd3b678)
+2024-10-27 14:54:47,853 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:54:47,857 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:54:47,881 - main - INFO - Retrieved 5 stored documents from the database
+2024-10-27 14:54:47,909 - worker - INFO - Starting file upload task for file: /tmp/43d9c0e1c9466944e0821be41fd3b678_2019-Sherlock-KDD.pdf
+2024-10-27 14:54:47,911 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:54:47,919 - db - INFO - Database initialization completed.
+2024-10-27 14:54:47,931 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 28; Took 0.011271 seconds, for an average of 0.00040253571428571427 seconds per hash.
+2024-10-27 14:54:47,932 - utils - INFO - Checking models directory...
+2024-10-27 14:54:47,933 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:54:47,940 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:54:47,941 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:54:47,942 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:54:47,943 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:54:47,944 - utils - INFO - Model downloads completed.
+2024-10-27 14:54:48,711 - worker - INFO - Successfully saved document and embedding with hash: 53b0db0c450998a83a7e219c62ed812fd6d307803b932e3333e2d9ad745fee08
+2024-10-27 14:54:48,716 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mJob OK[39;49;00m (43d9c0e1c9466944e0821be41fd3b678)
+2024-10-27 14:54:48,716 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 14:54:54,219 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:54:54,220 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:54:54,263 - main - INFO - Retrieved 6 stored documents from the database
+2024-10-27 14:54:54,264 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:54:54,264 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:54:54,316 - main - INFO - Retrieved 6 stored documents from the database
+2024-10-27 14:55:22,679 - main - INFO - Processing document URL: None
+2024-10-27 14:55:22,682 - main - INFO - Job enqueued successfully. Job ID: b5443f76cd135daea6ab6ad62c985d32
+2024-10-27 14:55:22,683 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mworker.upload_file_task('/tmp/b5443f76cd135daea6ab6ad62c985d32_Hnsw in hnsw - Rust.pdf', None, None, 'nomic-embed-text-v1.5.Q6_K', 'mean', 'default_codex', 'records', 'zip', None)[39;49;00m (b5443f76cd135daea6ab6ad62c985d32)
+2024-10-27 14:55:22,688 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:55:22,692 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:55:22,722 - worker - INFO - Starting file upload task for file: /tmp/b5443f76cd135daea6ab6ad62c985d32_Hnsw in hnsw - Rust.pdf
+2024-10-27 14:55:22,723 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 14:55:22,729 - main - INFO - Retrieved 6 stored documents from the database
+2024-10-27 14:55:22,731 - db - INFO - Database initialization completed.
+2024-10-27 14:55:22,739 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 28; Took 0.007561 seconds, for an average of 0.0002700357142857143 seconds per hash.
+2024-10-27 14:55:22,740 - utils - INFO - Checking models directory...
+2024-10-27 14:55:22,741 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 14:55:22,742 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 14:55:22,742 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 14:55:22,743 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 14:55:22,744 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 14:55:22,744 - utils - INFO - Model downloads completed.
+2024-10-27 14:55:23,478 - worker - INFO - Successfully saved document and embedding with hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-27 14:55:23,481 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mJob OK[39;49;00m (b5443f76cd135daea6ab6ad62c985d32)
+2024-10-27 14:55:23,481 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 14:57:30,947 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:57:30,948 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:57:30,994 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 14:57:30,996 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:57:30,997 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:57:31,040 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 14:57:38,665 - main - INFO - Retrieving content for document with document_hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-27 14:57:38,673 - main - INFO - Retrieved content for document with document_hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-27 14:57:47,350 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 14:57:47,350 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 14:57:47,382 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 14:57:47,385 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 14:57:47,386 - main - INFO - Processed 1 semantic data types
+2024-10-27 14:57:47,387 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:02:08,596 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 15:02:08,603 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 15:02:08,606 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 15:08:40,534 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:08:40,535 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:08:40,556 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 15:08:40,560 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 15:08:40,561 - main - INFO - Processed 1 semantic data types
+2024-10-27 15:08:40,577 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:10:34,799 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:10:34,800 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:10:34,852 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:10:34,854 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:10:34,854 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:10:34,889 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:11:53,631 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:11:53,631 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:11:53,682 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:11:53,686 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:11:53,686 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:11:53,715 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:11:56,535 - main - INFO - Retrieving content for document with document_hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-27 15:11:56,537 - main - INFO - Retrieved content for document with document_hash: 0dba43f224b96d8e46c521810477b5bc6debb22fc44d803e804f215887615d71
+2024-10-27 15:12:00,999 - main - INFO - Scan job enqueued successfully. Job ID: 11e695176de8c4c8d479a40c43a1a6a6
+2024-10-27 15:12:01,001 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mworker.scan_document_task('', 'nomic-embed-text-v1.5.Q6_K', 'mean', '', 0.01, 10, 'hoeffding_d')[39;49;00m (11e695176de8c4c8d479a40c43a1a6a6)
+2024-10-27 15:12:01,065 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-27 15:12:01,088 - rq.worker - INFO - [32mdocument_scans[39;49;00m: [34mJob OK[39;49;00m (11e695176de8c4c8d479a40c43a1a6a6)
+2024-10-27 15:12:01,090 - rq.worker - INFO - Result is kept for 86400 seconds
+2024-10-27 15:12:16,032 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:12:16,032 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:12:16,065 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:12:16,070 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 15:12:16,071 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 15:12:16,102 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 15:18:46,109 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 15:18:46,112 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 15:18:46,113 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 15:32:16,270 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 15:32:16,276 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 15:32:16,279 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 15:45:46,325 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 15:45:46,329 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 15:45:46,331 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 15:59:16,447 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 15:59:16,451 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 15:59:16,453 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 16:12:46,597 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 16:12:46,602 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 16:12:46,604 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 16:26:16,721 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 16:26:16,726 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 16:26:16,728 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 16:39:46,795 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 16:39:46,800 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 16:39:46,802 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 16:53:16,913 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 16:53:16,917 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 16:53:16,920 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 17:06:47,095 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 17:06:47,099 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 17:06:47,101 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 17:20:17,187 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 17:20:17,191 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 17:20:17,193 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 17:33:47,360 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 17:33:47,365 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 17:33:47,367 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 17:47:17,476 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 17:47:17,481 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 17:47:17,483 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 18:00:47,555 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 18:00:47,559 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 18:00:47,562 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 18:14:17,685 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 18:14:17,692 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 18:14:17,694 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 18:27:47,739 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 18:27:47,757 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 18:27:47,759 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 18:41:17,814 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 18:41:17,817 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 18:41:17,819 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 18:48:54,576 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:48:54,576 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:48:54,607 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 18:48:54,611 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 18:48:54,612 - main - INFO - Processed 1 semantic data types
+2024-10-27 18:48:54,646 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:49:00,532 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:49:00,533 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:49:00,560 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:49:00,562 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:49:00,562 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:49:00,586 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:49:12,108 - main - INFO - Processing document URL: None
+2024-10-27 18:49:12,117 - main - INFO - Job enqueued successfully. Job ID: 3c211b04deb4c9d81a87a59055d9651c
+2024-10-27 18:49:12,118 - rq.worker - INFO - [32mfile_uploads[39;49;00m: [34mworker.upload_file_task(None, None, None, 'nomic-embed-text-v1.5.Q6_K', 'mean', '', 'records', 'zip', None)[39;49;00m (3c211b04deb4c9d81a87a59055d9651c)
+2024-10-27 18:49:12,257 - worker - INFO - Starting file upload task for file: None
+2024-10-27 18:49:12,258 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-27 18:49:12,266 - db - INFO - Database initialization completed.
+2024-10-27 18:49:12,273 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 29; Took 0.005748 seconds, for an average of 0.00019820689655172412 seconds per hash.
+2024-10-27 18:49:12,273 - utils - INFO - Checking models directory...
+2024-10-27 18:49:12,274 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify-api/src/models
+2024-10-27 18:49:12,275 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-27 18:49:12,276 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-27 18:49:12,276 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/bge-m3-q8_0.gguf
+2024-10-27 18:49:12,276 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify-api/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-27 18:49:12,277 - utils - INFO - Model downloads completed.
+2024-10-27 18:49:12,277 - worker - ERROR - Error in upload task: 'NoneType' object has no attribute 'startswith'
+2024-10-27 18:49:12,280 - worker - ERROR - Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 174, in upload_file_task
+    if file_path_or_url.startswith(('http://', 'https://')):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'startswith'
+
+2024-10-27 18:49:12,308 - rq.worker - ERROR - [Job 3c211b04deb4c9d81a87a59055d9651c]: exception raised while executing (worker.upload_file_task)
+Traceback (most recent call last):
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/worker.py", line 1430, in perform_job
+    rv = job.perform()
+         ^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1280, in perform
+    self._result = self._execute()
+                   ^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/.venv/lib/python3.12/site-packages/rq/job.py", line 1320, in _execute
+    coro_result = loop.run_until_complete(result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.7/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/sidmohan/Desktop/codexify-api/src/worker.py", line 271, in upload_file_task
+    if os.path.exists(file_path_or_url) and file_path_or_url.startswith('/tmp/'):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 19, in exists
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneType
+
+2024-10-27 18:49:18,000 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:49:18,001 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:49:18,043 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:49:18,045 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:49:18,045 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:49:18,093 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:52:30,328 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:52:30,329 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:52:30,369 - main - INFO - Retrieving all semantic data types from the database
+2024-10-27 18:52:30,371 - main - INFO - Retrieved 1 semantic data types from the database
+2024-10-27 18:52:30,371 - main - INFO - Processed 1 semantic data types
+2024-10-27 18:52:30,379 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:52:34,609 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:52:34,609 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:52:34,635 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:52:34,637 - main - INFO - Received request to retrieve all stored documents
+2024-10-27 18:52:34,637 - main - INFO - Retrieving all stored documents from the database
+2024-10-27 18:52:34,676 - main - INFO - Retrieved 7 stored documents from the database
+2024-10-27 18:55:57,338 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 18:55:57,345 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 18:55:57,348 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 19:09:27,472 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 19:09:27,477 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 19:09:27,479 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 19:22:57,574 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 19:22:57,580 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 19:22:57,584 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 19:36:27,633 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 19:36:27,640 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 19:36:27,642 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 19:49:57,719 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 19:49:57,724 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 19:49:57,725 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 20:03:27,844 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 20:03:27,850 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 20:03:27,852 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 20:16:58,000 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 20:16:58,005 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 20:16:58,006 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 20:30:28,157 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 20:30:28,163 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 20:30:28,164 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 20:43:58,286 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 20:43:58,291 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 20:43:58,292 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 20:57:28,357 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 20:57:28,362 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 20:57:28,364 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 21:10:58,511 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 21:10:58,515 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 21:10:58,517 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 21:24:28,606 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 21:24:28,610 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 21:24:28,611 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 21:37:58,676 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 21:37:58,680 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 21:37:58,682 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 21:51:28,765 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 21:51:28,769 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 21:51:28,770 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 22:04:58,872 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 22:04:58,876 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 22:04:58,877 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 22:18:29,028 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 22:18:29,032 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 22:18:29,034 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 22:31:59,135 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 22:31:59,139 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 22:31:59,141 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 22:45:29,234 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 22:45:29,239 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 22:45:29,240 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 22:58:59,316 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 22:58:59,320 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 22:58:59,322 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 23:12:29,451 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 23:12:29,455 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 23:12:29,457 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 23:25:59,617 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 23:25:59,621 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 23:25:59,624 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 23:39:29,741 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 23:39:29,745 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 23:39:29,747 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-27 23:52:59,828 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-27 23:52:59,831 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-27 23:52:59,832 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 00:06:29,914 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 00:06:29,919 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 00:06:29,923 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 00:20:00,075 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 00:20:00,080 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 00:20:00,084 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 00:33:30,279 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 00:33:30,283 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 00:33:30,285 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 00:47:00,436 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 00:47:00,440 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 00:47:00,442 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 01:00:30,574 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 01:00:30,579 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 01:00:30,581 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 01:14:00,734 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 01:14:00,738 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 01:14:00,739 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 01:27:30,810 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 01:27:30,814 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 01:27:30,816 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 01:41:00,882 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 01:41:00,886 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 01:41:00,888 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 01:54:30,997 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 01:54:31,001 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 01:54:31,003 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 02:08:01,129 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 02:08:01,132 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 02:08:01,135 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 02:21:31,204 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 02:21:31,207 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 02:21:31,209 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 02:35:01,371 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 02:35:01,375 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 02:35:01,377 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 02:48:31,468 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 02:48:31,471 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 02:48:31,472 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 03:02:01,621 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 03:02:01,626 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 03:02:01,627 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 03:15:31,722 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 03:15:31,724 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 03:15:31,725 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 03:29:01,910 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 03:29:01,915 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 03:29:01,917 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 03:42:31,952 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 03:42:31,955 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 03:42:31,956 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 03:56:02,131 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 03:56:02,135 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 03:56:02,137 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 04:09:32,221 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 04:09:32,225 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 04:09:32,227 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 04:23:02,369 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 04:23:02,375 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 04:23:02,378 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 04:36:32,434 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 04:36:32,437 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 04:36:32,439 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 04:50:02,541 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 04:50:02,546 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 04:50:02,548 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 05:03:32,653 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 05:03:32,657 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 05:03:32,659 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 05:17:02,716 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 05:17:02,719 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 05:17:02,721 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 05:30:32,851 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 05:30:32,854 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 05:30:32,856 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 05:44:02,890 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 05:44:02,893 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 05:44:02,895 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 05:57:32,960 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 05:57:32,965 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 05:57:32,966 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 06:11:03,062 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 06:11:03,067 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 06:11:03,072 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 06:24:33,166 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 06:24:33,171 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 06:24:33,173 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 06:38:03,210 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 06:38:03,213 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 06:38:03,214 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 06:51:33,276 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 06:51:33,279 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 06:51:33,281 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 07:05:03,393 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 07:05:03,397 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 07:05:03,400 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 07:18:33,488 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 07:18:33,491 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 07:18:33,492 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 07:32:03,652 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 07:32:03,657 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 07:32:03,659 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 07:45:33,745 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 07:45:33,748 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 07:45:33,749 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 07:59:03,901 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 07:59:03,906 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 07:59:03,909 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 08:12:34,087 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 08:12:34,098 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 08:12:34,100 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 08:26:04,154 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 08:26:04,157 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 08:26:04,162 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 08:39:34,206 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 08:39:34,213 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 08:39:34,216 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 08:53:04,383 - rq.worker - INFO - Cleaning registries for queue: model_downloads
+2024-10-28 08:53:04,388 - rq.worker - INFO - Cleaning registries for queue: file_uploads
+2024-10-28 08:53:04,390 - rq.worker - INFO - Cleaning registries for queue: document_scans
+2024-10-28 09:00:48,060 - rq.worker - INFO - Worker worker-6971 [PID 6971]: warm shut down requested
+2024-10-28 09:00:48,075 - __main__ - INFO - Worker stopped by user
+2024-10-28 09:00:48,854 - main - INFO - Application shutdown initiated
+2024-10-28 09:00:49,071 - rq.scheduler - INFO - Scheduler stopping, releasing locks for document_scans, model_downloads, file_uploads...
+2024-10-28 09:00:49,111 - rq.scheduler - INFO - Scheduler with PID 6973 has stopped
+2024-10-28 09:00:49,630 - rq.worker - INFO - Unsubscribing from channel rq:pubsub:worker-6971

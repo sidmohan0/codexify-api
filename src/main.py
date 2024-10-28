@@ -234,7 +234,7 @@ async def get_list_of_models(token: str = None) -> Dict[str, List[str]]:
 #         corrected_model_url = add_model_url(decoded_model_url)
 #         _, download_status = download_models()
 #         status_dict = {status["url"]: status for status in download_status}
-        
+#        
 #         if corrected_model_url in status_dict:
 #             return {
 #                 "status": status_dict[corrected_model_url]["status"],
@@ -956,6 +956,149 @@ async def delete_documents(
         raise HTTPException(status_code=500, detail=f"An error occurred while deleting documents: {str(e)}")
     
 
+@app.post("/documents/scan", response_model=Dict[str, Any])
+async def scan_document(
+    request: AdvancedSemanticSearchRequest,
+    req: Request = None
+) -> Dict[str, Any]:
+    """
+    Initiate a document scanning job for semantic analysis.
+    """
+    try:
+        # Create a unique job ID
+        timestamp = datetime.now().isoformat()
+        unique_id = hashlib.md5(f"scan_{request.query_text}_{timestamp}".encode()).hexdigest()
+        
+        # Check existing jobs
+        try:
+            document_scans_queue = redis_manager.get_queue('document_scans')
+            existing_jobs = document_scans_queue.get_job_ids()
+            for job_id in existing_jobs:
+                try:
+                    job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+                    if job and job.args and job.args[0] == request.query_text and job.get_status() != 'failed':
+                        return {
+                            "status": "already_queued",
+                            "message": f"Document scan already in progress. Job ID: {job_id}",
+                            "job_id": job_id
+                        }
+                except Exception as fetch_err:
+                    logger.warning(f"Error checking existing job {job_id}: {str(fetch_err)}")
+                    continue
+                    
+        except Exception as e:
+            logger.warning(f"Error checking existing jobs: {str(e)}")
+
+        # Enqueue the scan task
+        try:
+            job = document_scans_queue.enqueue(
+                'worker.scan_document_task',
+                args=(request.query_text, request.llm_model_name, request.embedding_pooling_method, 
+                      request.corpus_identifier_string, request.similarity_filter_percentage,
+                      request.number_of_most_similar_strings_to_return, request.result_sorting_metric),
+                job_id=unique_id,
+                result_ttl=86400,
+                failure_ttl=86400,
+                timeout='1h'
+            )
+            
+            if not job:
+                raise Exception("Job creation failed")
+                
+            logger.info(f"Scan job enqueued successfully. Job ID: {unique_id}")
+            
+            # Verify the job was enqueued
+            verification_attempts = 3
+            for attempt in range(verification_attempts):
+                try:
+                    enqueued_job = Job.fetch(unique_id, connection=redis_manager.redis_sync)
+                    if enqueued_job:
+                        return {
+                            "status": "queued",
+                            "message": f"Document scan queued successfully. Job ID: {unique_id}",
+                            "job_id": unique_id
+                        }
+                except Exception as fetch_err:
+                    if attempt == verification_attempts - 1:
+                        raise
+                    logger.warning(f"Verification attempt {attempt + 1} failed: {str(fetch_err)}")
+                    await asyncio.sleep(0.5)
+                    
+            raise Exception("Job verification failed after multiple attempts")
+            
+        except Exception as e:
+            logger.error(f"Failed to enqueue job: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to queue document scan: {str(e)}"
+            )
+
+    except Exception as e:
+        error_msg = f"Failed to process document scan request: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+
+@app.get("/documents/scan/status/{job_id}", response_model=Dict[str, Any])
+async def get_scan_status(job_id: str) -> Dict[str, Any]:
+    """
+    Check the status of a document scan job
+    """
+    try:
+        job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+        
+        status_mapping = {
+            'queued': {'status': 'pending', 'message': 'Scan queued'},
+            'started': {'status': 'pending', 'message': 'Scan in progress'},
+            'finished': {'status': 'completed', 'result': job.result},
+            'failed': {'status': 'failed', 'error': str(job.exc_info)},
+            'stopped': {'status': 'stopped', 'message': 'Scan stopped'},
+            'deferred': {'status': 'pending', 'message': 'Scan deferred'}
+        }
+        
+        job_status = job.get_status()
+        return status_mapping.get(job_status, {
+            'status': 'unknown',
+            'message': f'Unknown job status: {job_status}'
+        })
+            
+    except Exception as e:
+        error_msg = f"Error fetching job status: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        return {
+            "status": "error",
+            "message": error_msg
+        }
+
+@app.get("/documents/scan/jobs", response_model=Dict[str, Any])
+async def list_scan_jobs() -> Dict[str, Any]:
+    """
+    List all document scan jobs and their statuses
+    """
+    try:
+        jobs = []
+        job_ids = Queue('document_scans', connection=redis_manager.redis_sync).get_job_ids()
+        
+        for job_id in job_ids:
+            job = Job.fetch(job_id, connection=redis_manager.redis_sync)
+            jobs.append({
+                'job_id': job_id,
+                'status': job.get_status(),
+                'created_at': job.created_at.isoformat() if job.created_at else None,
+                'document_hash': job.args[0] if job.args else None
+            })
+            
+        return {
+            "status": "success",
+            "jobs": jobs
+        }
+        
+    except Exception as e:
+        error_msg = f"Error listing jobs: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
 
 if __name__ == "__main__":
     import uvicorn

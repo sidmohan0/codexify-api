@@ -4,18 +4,22 @@ import redis
 from rq import Worker, Queue, Connection, get_current_job
 import logging
 import multiprocessing as mp
-from functions import parse_submitted_document_file_into_sentence_strings_func
 import traceback
 import platform
-import magika
 from hashlib import sha3_256
 import requests
 from magika import Magika
 from utils import add_model_url, download_models
-from os import getenv
-from functions import RedisManager
+from functions import (
+    RedisManager,
+    parse_submitted_document_file_into_sentence_strings_func
+)
+from functions import build_faiss_indexes, get_or_compute_embedding, get_list_of_corpus_identifiers_from_list_of_embedding_texts
+from models import AdvancedSemanticSearchRequest, EmbeddingRequest, AdvancedSemanticSearchResponse
+import faiss
+import numpy as np
 import asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, Integer, DateTime
 from datetime import datetime
@@ -23,6 +27,7 @@ import json
 from models import Document, DocumentEmbedding
 from db import AsyncSessionLocal
 import urllib
+import fast_vector_similarity as fvs
 
 # Configure logging before anything else
 logging.basicConfig(
@@ -266,6 +271,69 @@ async def upload_file_task(file_path_or_url: str, hash: str, size: int, llm_mode
         if os.path.exists(file_path_or_url) and file_path_or_url.startswith('/tmp/'):
             os.remove(file_path_or_url)
 
+async def scan_document_task(
+    query_text: str, 
+    llm_model_name: str, 
+    embedding_pooling_method: str, 
+    corpus_identifier_string: str,
+    similarity_filter_percentage: float,
+    number_of_most_similar_strings_to_return: int,
+    result_sorting_metric: str
+) -> AdvancedSemanticSearchResponse:
+    """
+    Background task to perform advanced semantic search on a document.
+    """
+    job = get_current_job()
+    job.meta['progress'] = 0
+    job.save_meta()
+
+    try:
+        # Initialize request object
+        job.meta['progress'] = 10
+        job.save_meta()
+        
+        request = AdvancedSemanticSearchRequest(
+            query_text=query_text,
+            llm_model_name=llm_model_name,
+            embedding_pooling_method=embedding_pooling_method,
+            corpus_identifier_string=corpus_identifier_string,
+            similarity_filter_percentage=similarity_filter_percentage,
+            number_of_most_similar_strings_to_return=number_of_most_similar_strings_to_return,
+            result_sorting_metric=result_sorting_metric
+        )
+
+        # Build FAISS indexes
+        job.meta['progress'] = 40
+        job.save_meta()
+        
+        faiss_indexes, associated_texts_by_model_and_pooling_method = await build_faiss_indexes(force_rebuild=True)
+        
+        job.meta['progress'] = 60
+        job.save_meta()
+
+        # Your existing search logic...
+        # (Keep your existing search implementation here)
+        
+        job.meta['progress'] = 100
+        job.save_meta()
+
+        return AdvancedSemanticSearchResponse(
+            query_text=request.query_text,
+            corpus_identifier_string=request.corpus_identifier_string,
+            embedding_pooling_method=request.embedding_pooling_method,
+            results=[]  # Empty list since search logic is not implemented yet
+        )
+
+    except Exception as e:
+        error_msg = f"Error in scan_document_task: {str(e)}"
+        logger.error(error_msg)
+        logger.error(traceback.format_exc())
+        job.meta['progress'] = 100
+        job.save_meta()
+        return {
+            "status": "error",
+            "message": error_msg
+        }
 class MultiQueueWorker:
     def __init__(self):
         setup_process()
