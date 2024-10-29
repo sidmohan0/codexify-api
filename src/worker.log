@@ -11012,3 +11012,16 @@ AttributeError: 'DatabaseWriter' object has no attribute 'close'
 2024-10-29 08:15:58,445 - rq.scheduler - INFO - Scheduler with PID 79324 has stopped
 2024-10-29 08:15:58,906 - rq.worker - INFO - Unsubscribing from channel rq:pubsub:worker-79318
 2024-10-29 08:15:59,382 - main - INFO - Application shutdown initiated
+2024-10-29 13:18:06,879 - main - INFO - Starting application initialization
+2024-10-29 13:18:06,889 - db - INFO - Initializing database, creating tables, and setting SQLite PRAGMAs...
+2024-10-29 13:18:06,898 - db - INFO - Database initialization completed.
+2024-10-29 13:18:06,909 - db - INFO - Finished initializing set of input hash/llm_model_name combinations that are either currently being processed or have already been processed. Set size: 5; Took 0.011426 seconds, for an average of 0.0022852000000000003 seconds per hash.
+2024-10-29 13:18:06,909 - utils - INFO - Checking models directory...
+2024-10-29 13:18:06,910 - utils - INFO - Models directory exists: /Users/sidmohan/Desktop/codexify/backend/src/models
+2024-10-29 13:18:06,910 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/nomic-embed-text-v1.5.Q6_K.gguf
+2024-10-29 13:18:06,910 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/Hermes-3-Llama-3.1-8B.Q4_K_M.gguf
+2024-10-29 13:18:06,910 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/bge-m3-q8_0.gguf
+2024-10-29 13:18:06,910 - utils - INFO - File already exists: /Users/sidmohan/Desktop/codexify/backend/src/models/llava-llama-3-8b-v1_1-int4.gguf
+2024-10-29 13:18:06,910 - utils - INFO - Model downloads completed.
+2024-10-29 13:18:06,913 - utils - INFO - Building Faiss index over embeddings for model nomic-embed-text-v1.5.Q6_K with pooling method mean...
+2024-10-29 13:18:06,913 - main - INFO - Application initialization complete

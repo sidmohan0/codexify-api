@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: textract-py3
+Version: 2.0.1
+Summary: Minimally maintained fork of deanmalmgren/textract to remove '*' dependencies
+Home-page: https://github.com/KyleKing/textract-py3
+License: MIT
+Author: Dean Malmgren
+Author-email: dean.malmgren@datascopeanalytics.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: pocketsphinx
+Requires-Dist: SpeechRecognition (>=3.8.1)
+Requires-Dist: argcomplete (>=1.10.0)
+Requires-Dist: beautifulsoup4 (>=4.8.0)
+Requires-Dist: chardet (>=3)
+Requires-Dist: docx2txt (>=0.8)
+Requires-Dist: extract-msg (>=0.30.11)
+Requires-Dist: pdfminer.six (>=20221105)
+Requires-Dist: python-pptx (>=0.6.18)
+Requires-Dist: six (>=1.16.0)
+Requires-Dist: xlrd (>=1.2.0)
+Project-URL: Repository, https://github.com/KyleKing/textract-py3
+Description-Content-Type: text/markdown
+
+# Textract
+
+This is a minimally maintained fork of [deanmalmgren/textract](https://github.com/deanmalmgren/textract) to remove '*' dependencies for use with `asdf` or `rtx` (`rtx plugin add textract-py3 https://github.com/amrox/asdf-pyapp.git`)
+
