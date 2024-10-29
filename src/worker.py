@@ -6,7 +6,7 @@ import logging
 import multiprocessing as mp
 import traceback
 import platform
-from hashlib import sha3_256
+from hashlib import sha3_256, md5
 import requests
 from magika import Magika
 from utils import add_model_url, download_models
@@ -28,7 +28,12 @@ from models import Document, DocumentEmbedding
 from db import AsyncSessionLocal
 import urllib
 import fast_vector_similarity as fvs
-
+from typing import Dict, Any
+import gc
+import resource
+import psutil
+from functions import load_model
+from db import DatabaseWriter, initialize_db, get_db_writer
 # Configure logging before anything else
 logging.basicConfig(
     level=logging.INFO,
@@ -50,6 +55,8 @@ redis_host = os.environ.get('REDIS_HOST', 'localhost')
 redis_port = int(os.environ.get('REDIS_PORT', 6379))
 
 redis_client = redis.Redis(host=redis_host, port=redis_port)
+global redis_manager
+redis_manager = RedisManager()
 
 def setup_process():
     """Set up process-specific configurations"""
@@ -58,9 +65,38 @@ def setup_process():
         if 'numpy' in sys.modules:
             del sys.modules['numpy']
 
+def get_memory_limit():
+    """Get memory limit in bytes"""
+    # Get system memory info
+    mem = psutil.virtual_memory()
+    # Use 80% of available memory as the limit
+    return int(mem.available * 0.8)
+
+def limit_memory():
+    """Set memory limits for the worker process"""
+    try:
+        # Get current limits
+        soft, hard = resource.getrlimit(resource.RLIMIT_AS)
+        
+        # Calculate new limit
+        new_limit = get_memory_limit()
+        
+        # Ensure new limit doesn't exceed hard limit
+        new_limit = min(new_limit, hard)
+        
+        # Set new memory limit
+        resource.setrlimit(resource.RLIMIT_AS, (new_limit, hard))
+        logger.info(f"Set memory limit to {new_limit / (1024*1024):.2f} MB")
+        
+    except Exception as e:
+        logger.warning(f"Failed to set memory limit: {str(e)}. Continuing without limit.")
+        # Continue execution even if setting limit fails
+        pass
+
 def worker_process(queue_names):
     """Function to run in a separate process for handling worker tasks"""
     try:
+        limit_memory()
         logger.info(f"Connecting to Redis at {redis_host}:{redis_port}")
         redis_manager = RedisManager()
         asyncio.run(redis_manager.initialize())
@@ -271,69 +307,157 @@ async def upload_file_task(file_path_or_url: str, hash: str, size: int, llm_mode
         if os.path.exists(file_path_or_url) and file_path_or_url.startswith('/tmp/'):
             os.remove(file_path_or_url)
 
-async def scan_document_task(
-    query_text: str, 
-    llm_model_name: str, 
-    embedding_pooling_method: str, 
-    corpus_identifier_string: str,
-    similarity_filter_percentage: float,
-    number_of_most_similar_strings_to_return: int,
-    result_sorting_metric: str
-) -> AdvancedSemanticSearchResponse:
-    """
-    Background task to perform advanced semantic search on a document.
-    """
+async def scan_document_task(query_text: str, llm_model_name: str, embedding_pooling_method: str, 
+                           corpus_identifier_string: str, similarity_filter_percentage: float,
+                           number_of_most_similar_strings_to_return: int, result_sorting_metric: str) -> Dict[str, Any]:
     job = get_current_job()
     job.meta['progress'] = 0
     job.save_meta()
+    model = None
 
     try:
-        # Initialize request object
-        job.meta['progress'] = 10
-        job.save_meta()
+        logger.info(f"Starting scan task with parameters: query_text_length={len(query_text)}, model={llm_model_name}")
         
-        request = AdvancedSemanticSearchRequest(
-            query_text=query_text,
+        # Use the global redis_manager instead of creating a new one
+        global redis_manager
+        if not redis_manager:
+            redis_manager = RedisManager()
+            await redis_manager.initialize()
+        
+        # Get the db_writer from redis_manager
+        db_writer = redis_manager.db_writer
+        
+        logger.info("Loading model...")
+        try:
+            model = load_model(llm_model_name)
+            if not model:
+                raise ValueError(f"Failed to load model: {llm_model_name}")
+            logger.info("Model loaded successfully")
+        except Exception as model_error:
+            logger.error(f"Error loading model: {str(model_error)}")
+            raise
+
+        # Get embedding for query text
+        logger.info("Creating embedding request...")
+        embedding_request = EmbeddingRequest(
+            text=query_text,
             llm_model_name=llm_model_name,
-            embedding_pooling_method=embedding_pooling_method,
-            corpus_identifier_string=corpus_identifier_string,
-            similarity_filter_percentage=similarity_filter_percentage,
-            number_of_most_similar_strings_to_return=number_of_most_similar_strings_to_return,
-            result_sorting_metric=result_sorting_metric
+            embedding_pooling_method=embedding_pooling_method
+        )
+        
+        logger.info("Computing embedding...")
+        try:
+            embedding_response = await get_or_compute_embedding(embedding_request, db_writer)
+            input_embedding = np.array(json.loads(embedding_response["text_embedding_dict"]["embedding_json"])).astype('float32').reshape(1, -1)
+            logger.info("Embedding computed successfully")
+        except Exception as embed_error:
+            logger.error(f"Error computing embedding: {str(embed_error)}")
+            raise
+
+        job.meta['progress'] = 50
+        job.save_meta()
+
+        # Build FAISS index
+        logger.info("Building FAISS index...")
+        try:
+            faiss_index, associated_texts_by_model_and_pooling_method = await build_faiss_indexes(
+                llm_model_name=llm_model_name,
+                embedding_pooling_method=embedding_pooling_method
+            )
+            
+            if not faiss_index:
+                raise ValueError("No FAISS index could be built - no embeddings found")
+            logger.info("FAISS index built successfully")
+        except Exception as faiss_error:
+            logger.error(f"Error building FAISS index: {str(faiss_error)}")
+            raise
+
+        # Perform search
+        num_results = max([1, int((1 - similarity_filter_percentage) * len(associated_texts_by_model_and_pooling_method[llm_model_name][embedding_pooling_method]))])
+        similarities, indices = faiss_index.search(input_embedding, num_results)
+        
+        # Process results
+        filtered_indices = indices[0]
+        filtered_similarities = similarities[0]
+        final_results = []
+        associated_texts = associated_texts_by_model_and_pooling_method[llm_model_name][embedding_pooling_method]
+        
+        list_of_corpus_identifier_strings = await get_list_of_corpus_identifiers_from_list_of_embedding_texts(
+            associated_texts, llm_model_name, embedding_pooling_method
         )
 
-        # Build FAISS indexes
-        job.meta['progress'] = 40
-        job.save_meta()
-        
-        faiss_indexes, associated_texts_by_model_and_pooling_method = await build_faiss_indexes(force_rebuild=True)
-        
-        job.meta['progress'] = 60
-        job.save_meta()
+        for idx, similarity in zip(filtered_indices, filtered_similarities):
+            if idx < len(associated_texts) and list_of_corpus_identifier_strings[idx] == corpus_identifier_string:
+                associated_text = associated_texts[idx]
+                
+                # Get detailed similarity stats
+                comparison_embedding_request = EmbeddingRequest(
+                    text=associated_text,
+                    llm_model_name=llm_model_name,
+                    embedding_pooling_method=embedding_pooling_method
+                )
+                comparison_embedding_response = await get_or_compute_embedding(
+                    comparison_embedding_request,
+                    db_writer
+                )
+                comparison_embedding = np.array(json.loads(
+                    comparison_embedding_response["text_embedding_dict"]["embedding_json"]
+                )).astype('float32').reshape(1, -1)
+                
+                params = {
+                    "vector_1": input_embedding.tolist()[0],
+                    "vector_2": comparison_embedding.tolist()[0],
+                    "similarity_measure": "all"
+                }
+                similarity_stats = json.loads(fvs.py_compute_vector_similarity_stats(json.dumps(params)))
+                
+                final_results.append({
+                    "search_result_text": associated_text,
+                    "similarity_to_query_text": similarity_stats
+                })
 
-        # Your existing search logic...
-        # (Keep your existing search implementation here)
-        
+        # Sort and trim results
+        results = sorted(
+            final_results,
+            key=lambda x: x["similarity_to_query_text"][result_sorting_metric],
+            reverse=True
+        )[:number_of_most_similar_strings_to_return]
+
         job.meta['progress'] = 100
         job.save_meta()
 
-        return AdvancedSemanticSearchResponse(
-            query_text=request.query_text,
-            corpus_identifier_string=request.corpus_identifier_string,
-            embedding_pooling_method=request.embedding_pooling_method,
-            results=[]  # Empty list since search logic is not implemented yet
-        )
+        return {
+            "status": "completed",
+            "results": {
+                "query_text": query_text,
+                "model": llm_model_name,
+                "embedding_pooling_method": embedding_pooling_method,
+                "corpus_identifier_string": corpus_identifier_string,
+                "similarity_filter_percentage": similarity_filter_percentage,
+                "number_of_most_similar_strings_to_return": number_of_most_similar_strings_to_return,
+                "result_sorting_metric": result_sorting_metric,
+                "results": results
+            }
+        }
 
     except Exception as e:
         error_msg = f"Error in scan_document_task: {str(e)}"
         logger.error(error_msg)
         logger.error(traceback.format_exc())
-        job.meta['progress'] = 100
-        job.save_meta()
         return {
             "status": "error",
             "message": error_msg
         }
+    finally:
+        # Clean up resources
+        if model:
+            try:
+                del model
+                gc.collect()
+                logger.info("Model cleanup completed")
+            except Exception as cleanup_error:
+                logger.error(f"Error during model cleanup: {str(cleanup_error)}")
+
 class MultiQueueWorker:
     def __init__(self):
         setup_process()

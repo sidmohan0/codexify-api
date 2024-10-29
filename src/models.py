@@ -410,10 +410,6 @@ class SemanticDataTypes(BaseModel):
 
     model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
 
-
-
-
-
 class DocumentEmbeddingResponse(BaseModel):
     id: Optional[int]
     document_hash: str

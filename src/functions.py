@@ -1,3 +1,4 @@
+from hashlib import sha3_256, md5
 from utils import build_faiss_indexes, is_redis_running, start_redis_server
 from db import AsyncSessionLocal, execute_with_retry
 from models import TextEmbedding, DocumentEmbedding, Document
@@ -219,33 +220,60 @@ async def initialize_globals():
 
 
 def load_model(llm_model_name: str, raise_http_exception: bool = True):
+    """Load and return a Llama model instance."""
     global USE_VERBOSE
-    model_instance = None
     try:
-        models_dir = os.path.join(BASE_DIRECTORY, 'models')
+        # Check if model is already cached
         if llm_model_name in embedding_model_cache:
             return embedding_model_cache[llm_model_name]
+
+        # Find the model file
+        models_dir = os.path.join(BASE_DIRECTORY, 'models')
         matching_files = glob.glob(os.path.join(models_dir, f"{llm_model_name}*"))
         if not matching_files:
             logger.error(f"No model file found matching: {llm_model_name}")
-            raise FileNotFoundError
+            if raise_http_exception:
+                raise HTTPException(status_code=404, detail="Model file not found")
+            raise FileNotFoundError(f"No model file found matching: {llm_model_name}")
+
+        # Get the most recently modified matching file
         matching_files.sort(key=os.path.getmtime, reverse=True)
         model_file_path = matching_files[0]
+
+        # Initialize model with GPU if available
         gpu_info = is_gpu_available()
-        if 'llava' in llm_model_name:
-            is_llava_multimodal_model = 1
-        else:
-            is_llava_multimodal_model = 0
+        is_llava_multimodal_model = 'llava' in llm_model_name
+
         if not is_llava_multimodal_model:
             if gpu_info['gpu_found']:
                 try:
-                    model_instance = llama_cpp.Llama(model_path=model_file_path, embedding=True, n_ctx=LLM_CONTEXT_SIZE_IN_TOKENS, verbose=USE_VERBOSE, n_gpu_layers=-1) # Load the model with GPU acceleration
-                except Exception as e:  # noqa: F841
-                    model_instance = llama_cpp.Llama(model_path=model_file_path, embedding=True, n_ctx=LLM_CONTEXT_SIZE_IN_TOKENS, verbose=USE_VERBOSE)
+                    model_instance = Llama(
+                        model_path=model_file_path,
+                        embedding=True,
+                        n_ctx=LLM_CONTEXT_SIZE_IN_TOKENS,
+                        verbose=USE_VERBOSE,
+                        n_gpu_layers=-1
+                    )
+                except Exception as e:
+                    logger.warning(f"Failed to load model with GPU, falling back to CPU: {e}")
+                    model_instance = Llama(
+                        model_path=model_file_path,
+                        embedding=True,
+                        n_ctx=LLM_CONTEXT_SIZE_IN_TOKENS,
+                        verbose=USE_VERBOSE
+                    )
             else:
-                model_instance = llama_cpp.Llama(model_path=model_file_path, embedding=True, n_ctx=LLM_CONTEXT_SIZE_IN_TOKENS, verbose=USE_VERBOSE) # Load the model without GPU acceleration        
+                model_instance = Llama(
+                    model_path=model_file_path,
+                    embedding=True,
+                    n_ctx=LLM_CONTEXT_SIZE_IN_TOKENS,
+                    verbose=USE_VERBOSE
+                )
+
+            # Cache the model instance
             embedding_model_cache[llm_model_name] = model_instance
-        return model_instance
+            return model_instance
+
     except TypeError as e:
         logger.error(f"TypeError occurred while loading the model: {e}")
         raise
@@ -254,8 +282,7 @@ def load_model(llm_model_name: str, raise_http_exception: bool = True):
         traceback.print_exc()
         if raise_http_exception:
             raise HTTPException(status_code=404, detail="Model file not found")
-        else:
-            raise FileNotFoundError(f"No model file found matching: {llm_model_name}")
+        raise FileNotFoundError(f"No model file found matching: {llm_model_name}")
 
 logger = logging.getLogger(__name__)
 magika = Magika()
@@ -412,143 +439,126 @@ async def get_texts_for_model_and_embedding_pooling_method(llm_model_name: str, 
             )
     return texts_by_model_and_embedding_pooling_method
 
-async def get_or_compute_embedding(request: EmbeddingRequest, req: Request = None, client_ip: str = None, document_file_hash: str = None, use_verbose: bool = True) -> dict:
-    request_time = datetime.utcnow()  # Capture request time as datetime object
-    ip_address = (
-        client_ip or (req.client.host if req else "localhost")
-    )  # If client_ip is provided, use it; otherwise, try to get from req; if not available, default to "localhost"
-    if use_verbose:
-        logger.info(f"Received request for embedding for '{request.text}' using model '{request.llm_model_name}' and embedding pooling method '{request.embedding_pooling_method}' from IP address '{ip_address}'")
-    text_embedding_instance = await get_embedding_from_db(
-        request.text, request.llm_model_name, request.embedding_pooling_method
-    )
-    if text_embedding_instance is not None: # Check if embedding exists in the database
-        response_time = datetime.utcnow()  # Capture response time as datetime object
-        total_time = (
-            response_time - request_time
-        ).total_seconds()  # Calculate time taken in seconds
-        if use_verbose:
-            logger.info(f"Embedding found in database for '{request.text}' using model '{request.llm_model_name}' and embedding pooling method '{request.embedding_pooling_method}'; returning in {total_time:.4f} seconds")
-        return {"text_embedding_dict": text_embedding_instance.as_dict()}
-    model = load_model(request.llm_model_name)
-    # Compute the embedding if not in the database
-    list_of_embedding_entry_dicts = await calculate_sentence_embeddings_list(model, [request.text], request.embedding_pooling_method)
-    embedding_entry_dict = list_of_embedding_entry_dicts[0]
-    if embedding_entry_dict is None:
-        logger.error(
-            f"Could not calculate the embedding for the given text: '{request.text}' using model '{request.llm_model_name} and embedding pooling method '{request.embedding_pooling_method}!'"
-        )
-        raise HTTPException(
-            status_code=400,
-            detail="Could not calculate the embedding for the given text",
-        )
-    else:
-        embedding = embedding_entry_dict['embedding']
-        embedding_hash = embedding_entry_dict['embedding_hash']
-        text = request.text
-        text_hash = sha3_256(text.encode('utf-8')).hexdigest()
-        embedding_json = json.dumps(embedding)
-        request_time = datetime.utcnow()
-        response_time = datetime.utcnow()
-        total_time = (response_time - request_time).total_seconds()
-        embedding_instance = TextEmbedding(
-            text=text,
-            text_hash=text_hash,
-            embedding_hash=embedding_hash,
-            llm_model_name=request.llm_model_name,
-            embedding_pooling_method=request.embedding_pooling_method,
-            corpus_identifier_string=request.corpus_identifier_string,
-            embedding_json=embedding_json,
-            ip_address=client_ip,
-            request_time=request_time,
-            response_time=response_time,
-            total_time=total_time,
-            document_file_hash=document_file_hash,
-        )
-    word_length_of_input_text = len(request.text.split())
-    if word_length_of_input_text > 0:
-        if use_verbose:
-            logger.info(f"Embedding calculated for '{request.text}' using model '{request.llm_model_name}' and embedding pooling method '{request.embedding_pooling_method}' in {total_time:,.2f} seconds, or an average of {total_time/word_length_of_input_text :.2f} seconds per word. Now saving to database...")
-    await db_writer.enqueue_write([embedding_instance])  # Enqueue the write operation using the db_writer instance directly
-    return {"text_embedding_dict": embedding_instance.as_dict()}
-
-async def calculate_sentence_embeddings_list(llama, texts: list, embedding_pooling_method: str) -> list:
-    start_time = datetime.utcnow()
-    total_number_of_sentences = len(texts)
-    total_characters = sum(len(s) for s in texts)
-    sentence_embeddings_object = llama.create_embedding(texts)
-    sentence_embeddings_list = sentence_embeddings_object['data']
-    if len(sentence_embeddings_list) != len(texts):
-        raise ValueError("Inconsistent number of embeddings found.")
-    list_of_embedding_entry_dicts = []
-    cnt = 0
-    for i, current_text in enumerate(texts):
-        current_set_of_embeddings = sentence_embeddings_list[i]['embedding']
-        if isinstance(current_set_of_embeddings[0], list):
-            number_of_embeddings = len(current_set_of_embeddings)
-        else:
-            number_of_embeddings = 1
-            current_set_of_embeddings = [current_set_of_embeddings]
-        logger.info(f"Sentence {i + 1:,} of {len(texts):,} has {number_of_embeddings:,} embeddings for text '{current_text[:50]}...'")
-        embeddings = np.array(current_set_of_embeddings)
-        dimension_of_token_embeddings = embeddings.shape[1]
-        # Ensure embeddings have enough dimensions for the pooling method
-        required_components = {
-            "svd": 2,
-            "svd_first_four": 4,
-            "ica": 2,
-            "factor_analysis": 2,
-            "gaussian_random_projection": 2
+async def get_or_compute_embedding(embedding_request: EmbeddingRequest, db_writer) -> Dict[str, Any]:
+    """Get or compute embedding for the given text."""
+    try:
+        # Initialize Redis manager if not already done
+        redis_manager = RedisManager()
+        await redis_manager.initialize()
+        
+        # Create cache key
+        cache_key = f"embedding:{embedding_request.llm_model_name}:{embedding_request.embedding_pooling_method}:{md5(embedding_request.text.encode()).hexdigest()}"
+        
+        # Try to get from cache first
+        try:
+            cached_result = await redis_manager.redis_async.get(cache_key)
+            if cached_result:
+                return json.loads(cached_result)
+        except Exception as e:
+            logger.warning(f"Cache retrieval failed: {str(e)}")
+        
+        # Load the model
+        model = load_model(embedding_request.llm_model_name)
+        
+        # If not in cache, compute embedding
+        try:
+            embedding_instance = await calculate_sentence_embeddings_list(
+                model,  # Pass the model instance instead of text
+                [embedding_request.text],  # Pass text as a list
+                embedding_request.embedding_pooling_method
+            )
+        except Exception as e:
+            logger.error(f"Error computing embedding: {str(e)}")
+            raise
+        
+        # Store in database if db_writer is provided
+        if db_writer:
+            try:
+                await db_writer.enqueue_write([embedding_instance])
+            except Exception as e:
+                logger.warning(f"Database write failed: {str(e)}")
+        
+        # Store in cache
+        result = {
+            "text_embedding_dict": {
+                "text": embedding_request.text,
+                "embedding_json": json.dumps(embedding_instance[0]['embedding']),  # Get first embedding since we passed a single text
+                "llm_model_name": embedding_request.llm_model_name,
+                "embedding_pooling_method": embedding_request.embedding_pooling_method
+            }
         }
-        if number_of_embeddings > 1:
-            min_components = required_components.get(embedding_pooling_method, 1)
-            if number_of_embeddings < min_components:
-                padding = np.zeros((min_components - number_of_embeddings, dimension_of_token_embeddings))
-                embeddings = np.vstack([embeddings, padding])
-            if embedding_pooling_method == "mean":
-                element_wise_mean = np.mean(embeddings, axis=0)
-                flattened_vector = element_wise_mean.flatten()
-            elif embedding_pooling_method == "mins_maxes":
-                element_wise_min = np.min(embeddings, axis=0)
-                element_wise_max = np.max(embeddings, axis=0)
-                flattened_vector = np.concatenate([element_wise_min, element_wise_max], axis=0)
-            elif embedding_pooling_method == "svd":
-                svd = TruncatedSVD(n_components=2)
-                svd_embeddings = svd.fit_transform(embeddings.T)
-                flattened_vector = svd_embeddings.flatten()
-            elif embedding_pooling_method == "svd_first_four":
-                svd = TruncatedSVD(n_components=4)
-                svd_embeddings = svd.fit_transform(embeddings.T)
-                flattened_vector = svd_embeddings.flatten()
-            elif embedding_pooling_method == "ica":
-                ica = FastICA(n_components=2)
-                ica_embeddings = ica.fit_transform(embeddings.T)
-                flattened_vector = ica_embeddings.flatten()
-            elif embedding_pooling_method == "factor_analysis":
-                fa = FactorAnalysis(n_components=2)
-                fa_embeddings = fa.fit_transform(embeddings.T)
-                flattened_vector = fa_embeddings.flatten()           
-            elif embedding_pooling_method == "gaussian_random_projection":
-                grp = GaussianRandomProjection(n_components=2)
-                grp_embeddings = grp.fit_transform(embeddings.T)
-                flattened_vector = grp_embeddings.flatten()                 
-            else:
-                raise ValueError(f"Unknown embedding_pooling_method: {embedding_pooling_method}")
-            combined_embedding = flattened_vector.tolist()
-        else:
-            flattened_vector = embeddings.flatten().tolist()
-            combined_embedding = embeddings.flatten().tolist()
-        embedding_length = len(combined_embedding)
-        cnt += 1
-        embedding_json = json.dumps(combined_embedding)
-        embedding_hash = sha3_256(embedding_json.encode('utf-8')).hexdigest()
-        embedding_entry_dict = {'text_index': i, 'text': current_text, 'embedding_pooling_method': embedding_pooling_method, 'number_of_token_embeddings_used': number_of_embeddings, 'embedding_length': embedding_length, 'embedding_hash': embedding_hash, 'embedding': combined_embedding}
-        list_of_embedding_entry_dicts.append(embedding_entry_dict)
-    end_time = datetime.utcnow()
-    total_time = (end_time - start_time).total_seconds()
-    logger.info(f"Calculated {len(flattened_vector):,}-dimensional embeddings (relative to the underlying token embedding dimensions of {dimension_of_token_embeddings:,}) for {total_number_of_sentences:,} sentences in a total of {total_time:,.1f} seconds.")
-    logger.info(f"That's an average of {1000*total_time/total_number_of_sentences:,.2f} ms per sentence and {total_number_of_sentences/total_time:,.3f} sentences per second (and {total_characters/(1000*total_time):,.4f} total characters per ms) using pooling method '{embedding_pooling_method}'")
-    return list_of_embedding_entry_dicts
+        
+        try:
+            await redis_manager.redis_async.set(
+                cache_key, 
+                json.dumps(result), 
+                ex=3600  # Cache for 1 hour
+            )
+        except Exception as e:
+            logger.warning(f"Cache storage failed: {str(e)}")
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error in get_or_compute_embedding: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise
+
+async def calculate_sentence_embeddings_list(model, sentences: List[str], embedding_pooling_method: str) -> List[Dict]:
+    """Calculate embeddings for a list of sentences."""
+    try:
+        start_time = datetime.utcnow()
+        embeddings_list = []
+        total_chars = sum(len(s) for s in sentences)
+        
+        for i, sentence in enumerate(sentences, 1):
+            try:
+                # Get embedding from model
+                if hasattr(model, 'embed'):  # For some models like nomic
+                    embedding = model.embed(sentence)
+                elif hasattr(model, 'create_embedding'):  # For llama.cpp models
+                    embedding = model.create_embedding(sentence)['embedding']
+                else:
+                    raise ValueError(f"Model {type(model)} doesn't support embedding generation")
+                
+                # Convert to numpy array if needed
+                if not isinstance(embedding, np.ndarray):
+                    embedding = np.array(embedding)
+                
+                # Apply pooling
+                if embedding_pooling_method == "mean":
+                    pooled_embedding = np.mean(embedding, axis=0) if embedding.ndim > 1 else embedding
+                elif embedding_pooling_method == "max":
+                    pooled_embedding = np.max(embedding, axis=0) if embedding.ndim > 1 else embedding
+                else:
+                    pooled_embedding = embedding
+                
+                # Create hash of the embedding
+                embedding_hash = sha3_256(pooled_embedding.tobytes()).hexdigest()
+                
+                embeddings_list.append({
+                    'embedding': pooled_embedding,
+                    'embedding_hash': embedding_hash
+                })
+                
+                logger.info(f"Sentence {i} of {len(sentences)} has {len(embedding)} embeddings for text '{sentence[:50]}...'")
+                
+            except Exception as e:
+                logger.error(f"Error processing sentence {i}: {str(e)}")
+                raise
+        
+        end_time = datetime.utcnow()
+        total_time = (end_time - start_time).total_seconds()
+        
+        logger.info(f"Calculated {len(embeddings_list[0]['embedding'])}-dimensional embeddings for {len(sentences)} sentences in a total of {total_time:.1f} seconds.")
+        logger.info(f"That's an average of {(total_time * 1000 / len(sentences)):.2f} ms per sentence and {(len(sentences) / total_time):.3f} sentences per second (and {(total_chars / total_time / 1000):.4f} total characters per ms) using pooling method '{embedding_pooling_method}'")
+        
+        return embeddings_list
+    
+    except Exception as e:
+        logger.error(f"Error in calculate_sentence_embeddings_list: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise
 
 async def batch_save_embeddings_to_db(embeddings: List[TextEmbedding]):
     async with AsyncSessionLocal() as session:

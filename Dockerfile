@@ -91,4 +91,4 @@ WORKDIR /app
 
 # Command to run the application
 # Start Redis server and then run the application
-CMD redis-server & uvicorn src.main:app --host 0.0.0.0 --port 8089 --workers 4
+CMD ["sh", "-c", "uvicorn src.main:app --host 0.0.0.0 --port 8089 --workers 2"]

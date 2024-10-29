@@ -1,4 +1,3 @@
-
 from db import AsyncSessionLocal, create_async_engine, create_tables
 from utils import  build_faiss_indexes, configure_redis_optimally
 from models import DocumentEmbedding, Document, TextEmbedding, DocumentContentResponse,  DocumentPydantic, SemanticDataTypeResponse, AllSemanticDataTypesResponse
@@ -964,6 +963,12 @@ async def scan_document(
     """
     Initiate a document scanning job for semantic analysis.
     """
+    if not request.query_text or request.query_text.strip() == "":
+        raise HTTPException(
+            status_code=400,
+            detail="Query text cannot be empty"
+        )
+    
     try:
         # Create a unique job ID
         timestamp = datetime.now().isoformat()

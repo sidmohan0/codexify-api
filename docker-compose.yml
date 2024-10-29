@@ -1,21 +1,28 @@
+
 services:
-  web:
+  api:
     build: .
     ports:
       - "8089:8089"
-    command: uvicorn main:app --host 0.0.0.0 --port 8089
     environment:
-      - REDIS_URL=redis://redis:6379/0
-      - REDIS_PASSWORD=your_password
+      - REDIS_HOST=redis
     depends_on:
       - redis
+      - worker
 
   worker:
-    build: .
-    command: rq worker
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 4G  # Set maximum memory limit
+        reservations:
+          memory: 2G  # Set minimum memory reservation
     environment:
-      - REDIS_URL=redis://redis:6379/0
-      - REDIS_PASSWORD=your_password
+      - REDIS_HOST=redis
+    command: rq worker --url redis://redis:6379
     depends_on:
       - redis
 
@@ -23,18 +30,3 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-    networks:
-      - app-network
-
-  api:
-    # ... your API service configuration ...
-    environment:
-      - REDIS_HOST=redis  # When using Docker, the host should be the service name
-    depends_on:
-      - redis
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge

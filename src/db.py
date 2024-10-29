@@ -12,6 +12,7 @@ import json
 import os
 from typing import Optional, Tuple
 import logging
+from hashlib import sha3_256, md5
 
 logger = logging.getLogger(__name__)
 db_writer = None
