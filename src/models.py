@@ -331,6 +331,9 @@ class AdvancedSemanticSearchRequest(BaseModel):
     similarity_filter_percentage: float = 0.01
     number_of_most_similar_strings_to_return: int = 10
     result_sorting_metric: str = "hoeffding_d"
+    json_format: str = "records"
+    send_back_json_or_zip_file: str = "json"
+
     @field_validator('result_sorting_metric')
     def validate_similarity_measure(cls, value):
         valid_measures = ["spearman_rho", "kendall_tau", "approximate_distance_correlation", "jensen_shannon_dependency_measure", "hoeffding_d"]

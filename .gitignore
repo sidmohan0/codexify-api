@@ -8,7 +8,7 @@ wheels/
 
 # Virtual environments
 .venv/
-
+venv/
 .env
 
 .dockerignore
@@ -22,3 +22,6 @@ src/models/
 *.log.*
 *.rdb
 *.db
+
+codexify.sqlite-shm
+codexify.sqlite-wal

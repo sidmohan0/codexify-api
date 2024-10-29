@@ -412,11 +412,16 @@ async def get_texts_for_model_and_embedding_pooling_method(llm_model_name: str, 
             )
     return texts_by_model_and_embedding_pooling_method
 
-async def get_or_compute_embedding(request: EmbeddingRequest, req: Request = None, client_ip: str = None, document_file_hash: str = None, use_verbose: bool = True) -> dict:
-    request_time = datetime.utcnow()  # Capture request time as datetime object
-    ip_address = (
-        client_ip or (req.client.host if req else "localhost")
-    )  # If client_ip is provided, use it; otherwise, try to get from req; if not available, default to "localhost"
+async def get_or_compute_embedding(
+    request: EmbeddingRequest, 
+    req: Request = None, 
+    client_ip: str = None, 
+    document_file_hash: str = None, 
+    use_verbose: bool = True,
+    db_writer = None
+) -> dict:
+    request_time = datetime.utcnow()
+    ip_address = client_ip or (req.client.host if req else None)
     if use_verbose:
         logger.info(f"Received request for embedding for '{request.text}' using model '{request.llm_model_name}' and embedding pooling method '{request.embedding_pooling_method}' from IP address '{ip_address}'")
     text_embedding_instance = await get_embedding_from_db(
@@ -469,7 +474,10 @@ async def get_or_compute_embedding(request: EmbeddingRequest, req: Request = Non
     if word_length_of_input_text > 0:
         if use_verbose:
             logger.info(f"Embedding calculated for '{request.text}' using model '{request.llm_model_name}' and embedding pooling method '{request.embedding_pooling_method}' in {total_time:,.2f} seconds, or an average of {total_time/word_length_of_input_text :.2f} seconds per word. Now saving to database...")
-    await db_writer.enqueue_write([embedding_instance])  # Enqueue the write operation using the db_writer instance directly
+    # Use the passed db_writer if available
+    if db_writer:
+        await db_writer.enqueue_write([embedding_instance])
+    
     return {"text_embedding_dict": embedding_instance.as_dict()}
 
 async def calculate_sentence_embeddings_list(llama, texts: list, embedding_pooling_method: str) -> list:
