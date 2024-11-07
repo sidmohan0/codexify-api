@@ -125,7 +125,7 @@ For any questions or support, please contact hi@datafog.ai
 
 ## Acknowledgements
 
-The design and implementation pattern was inspired by this great project: https://github.com/Dicklesworthstone/swiss_army_llama by Github User Dicklesworthstone.
+The design and implementation pattern was inspired by this great project: https://github.com/Dicklesworthstone/swiss_army_llama.
 
 While the original project provided the foundation for semantic search functionality, this repository includes significant modifications and new features including:
 - Environment variable configuration
