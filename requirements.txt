@@ -79,7 +79,7 @@ extract-msg==0.52.0
     # via textract-py3
 faiss-cpu==1.9.0
     # via codexify-api (pyproject.toml)
-fast-vector-similarity==0.1.5
+fast-vector-similarity
     # via codexify-api (pyproject.toml)
 fastapi==0.115.3
     # via codexify-api (pyproject.toml)

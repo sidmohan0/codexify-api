@@ -41,7 +41,7 @@ import logging
 
 from db import DatabaseWriter, initialize_db
 from aioredlock import Aioredlock
-import aioredis
+import redis.asyncio as redis
 import asyncio
 import urllib.request
 import os
@@ -122,7 +122,8 @@ async def initialize_globals():
         logger.info("Starting Redis server...")
         start_redis_server()
         await asyncio.sleep(1)  # Sleep for 1 second to give Redis time to start
-    redis = await aioredis.from_url('redis://localhost')
+    import redis.asyncio
+    redis = await redis.asyncio.from_url('redis://localhost')
     lock_manager = Aioredlock([redis])
     lock_manager.default_lock_timeout = 20000  # Lock timeout in milliseconds (20 seconds)
     lock_manager.retry_count = 5  # Number of retries
@@ -135,7 +136,6 @@ async def initialize_globals():
     asyncio.create_task(db_writer.dedicated_db_writer())
     list_of_downloaded_model_names, download_status = download_models()
     faiss_indexes, associated_texts_by_model_and_pooling_method = await build_faiss_indexes()
-
 
 # other shared variables and methods
 db_writer = None

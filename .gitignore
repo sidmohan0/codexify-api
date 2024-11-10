@@ -17,3 +17,9 @@ src/models.pyc
 src/*.sqlite
 src/__pycache__/
 src/models/
+venv/
+
+*.sqlite-shm
+*.sqlite-wal
+src/codexify.sqlite-shm
+src/codexify.sqlite-wal
