@@ -1,13 +1,13 @@
-
 from db import AsyncSessionLocal, create_async_engine, create_tables
 from utils import  build_faiss_indexes, configure_redis_optimally
 from models import DocumentEmbedding, Document, TextEmbedding, DocumentContentResponse,  DocumentPydantic, SemanticDataTypeResponse, AllSemanticDataTypesResponse
 from models import EmbeddingRequest, SemanticSearchRequest, AdvancedSemanticSearchRequest, SimilarityRequest, SimilarityResponse
 from models import EmbeddingResponse, SemanticSearchResponse, AdvancedSemanticSearchResponse, AllDocumentsResponse
 from models import SemanticDataType, SemanticDataTypeEmbeddingRequest, SemanticDataTypeEmbeddingResponse, SemanticSearchRequest, SemanticSearchResponse, AllSemanticDataTypesResponse
+from models import AnnotationRequest, AnnotationResponse, Entity
 from functions import get_or_compute_embedding,  add_model_url, download_file, decompress_data, store_document_embeddings_in_db, download_models, initialize_globals
 from functions import get_list_of_corpus_identifiers_from_list_of_embedding_texts, compute_embeddings_for_document, parse_submitted_document_file_into_sentence_strings_func,prepare_string_for_embedding, sophisticated_sentence_splitter, remove_pagination_breaks, truncate_string
-
+import httpx
 import asyncio
 import glob
 import json
@@ -36,6 +36,7 @@ import uvloop
 from magika import Magika
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+
 
 logger = logging.getLogger(__name__)
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -105,7 +106,7 @@ app = FastAPI(title="Codexify", description=description_string, docs_url="/", li
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://codexify.vercel.app","http://codexify.ai"],  # Add your frontend URL
+    allow_origins=["http://localhost:3000", "http://codexify.vercel.app", "http://codexify.ai", "http://127.0.0.1:8000"],  # Add your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -839,7 +840,6 @@ async def delete_documents(
         logger.error(f"An error occurred while deleting documents: {str(e)}")
         raise HTTPException(status_code=500, detail=f"An error occurred while deleting documents: {str(e)}")
     
-
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8089)

@@ -45,6 +45,7 @@ from datetime import datetime
 
 
 
+
 Base = declarative_base()
 DEFAULT_LLM_NAME = os.getenv("DEFAULT_LLM_NAME", "Meta-Llama-3-8B-Instruct.Q3_K_S")
 DEFAULT_EMBEDDING_MODEL_NAME = os.getenv("DEFAULT_EMBEDDING_MODEL_NAME", "nomic-embed-text-v1.5.Q6_K")
@@ -449,3 +450,25 @@ class SemanticTypeSearchResponse(BaseModel):
     embedding_pooling_method: str
     results: List[Dict[str, Union[str, float, Dict[str, float]]]]
 
+# Add after the other request/response models
+
+class AnnotationRequest(BaseModel):
+    text: str
+
+class Entity(BaseModel):
+    text: str
+    start: int
+    end: int
+    type: str
+
+class AnnotationResponse(BaseModel):
+    entities: List[Entity]
+
+# Add after the annotation models
+
+class AnonymizationRequest(BaseModel):
+    text: str
+
+class AnonymizationResponse(BaseModel):
+    text: str
+    entities: List[Entity]  # Reusing the Entity model from annotations
