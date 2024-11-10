@@ -149,9 +149,7 @@ def download_models() -> Tuple[List[str], List[Dict[str, str]]]:
     json_path = os.path.join(BASE_DIRECTORY, "model_urls.json")
     if not os.path.exists(json_path):
         initial_model_urls = [
-            "https://huggingface.co/NousResearch/Hermes-2-Theta-Llama-3-8B-GGUF/resolve/main/Hermes-2-Pro-Llama-3-Instruct-Merged-DPO-Q4_K_M.gguf",
-            "https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF/resolve/main/Meta-Llama-3-8B-Instruct.Q3_K_S.gguf",
-            "https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-q8_0.gguf"
+            "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q6_K.gguf"
         ]
         with open(json_path, "w") as f:
             json.dump(initial_model_urls, f)
