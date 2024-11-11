@@ -284,7 +284,7 @@ class EmbeddingRequest(BaseModel):
     text: str = ""
     llm_model_name: str = DEFAULT_EMBEDDING_MODEL_NAME
     embedding_pooling_method: str = DEFAULT_EMBEDDING_POOLING_METHOD
-    corpus_identifier_string: str = ""
+    corpus_identifier_string: str = "codex_1"
 
 class SimilarityRequest(BaseModel):
     text1: str = ""
