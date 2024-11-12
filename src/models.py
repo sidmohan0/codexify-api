@@ -284,7 +284,7 @@ class EmbeddingRequest(BaseModel):
     text: str = ""
     llm_model_name: str = DEFAULT_EMBEDDING_MODEL_NAME
     embedding_pooling_method: str = DEFAULT_EMBEDDING_POOLING_METHOD
-    corpus_identifier_string: str = "codex_1"
+    corpus_identifier_string: str = ""
 
 class SimilarityRequest(BaseModel):
     text1: str = ""
@@ -472,3 +472,36 @@ class AnonymizationRequest(BaseModel):
 class AnonymizationResponse(BaseModel):
     text: str
     entities: List[Entity]  # Reusing the Entity model from annotations
+
+class ScanPatternRequest(BaseModel):
+    document_corpus_id: str = Field(..., description="Corpus identifier string containing the document to scan")
+    pattern_corpus_id: str = Field(..., description="Corpus identifier string containing the patterns to match against")
+    operation: str = Field(..., description="Type of scan operation (e.g. PII, SENSITIVE)")
+    llm_model_name: str = Field(default=DEFAULT_EMBEDDING_MODEL_NAME)
+    embedding_pooling_method: str = Field(default=DEFAULT_EMBEDDING_POOLING_METHOD) 
+    similarity_threshold: float = Field(default=0.8, ge=0.0, le=1.0)
+
+    model_config = ConfigDict(from_attributes=True)
+
+class Match(BaseModel):
+    text: str = Field(..., description="Matched text content")
+    start: int = Field(..., description="Start position of match")
+    end: int = Field(..., description="End position of match") 
+    match_type: str = Field(..., description="Type of match found")
+    confidence_score: float = Field(..., description="Confidence score of the match")
+    semantic_type: str = Field(..., description="Semantic type of the match")
+    document_id: int = Field(..., description="ID of the document containing the match")
+    filename: str = Field(..., description="Name of the file containing the match")
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ScanPatternResponse(BaseModel):
+    operation: str = Field(..., description="Scan operation performed")
+    document_corpus_id: str = Field(..., description="Corpus containing the scanned document")
+    pattern_corpus_id: str = Field(..., description="Corpus containing the patterns")
+    matches: List[Match] = Field(default_factory=list)
+    total_matches: int = Field(..., description="Total number of matches found")
+    total_sentences_scanned: int = Field(..., description="Number of sentences scanned")
+    processing_time: float = Field(..., description="Time taken to process in seconds")
+
+    model_config = ConfigDict(from_attributes=True)

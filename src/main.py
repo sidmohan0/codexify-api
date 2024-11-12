@@ -1,7 +1,7 @@
 from db import AsyncSessionLocal, create_async_engine, create_tables
 from utils import  build_faiss_indexes, configure_redis_optimally
 from models import DocumentEmbedding, Document, TextEmbedding, DocumentContentResponse,  DocumentPydantic, SemanticDataTypeResponse, AllSemanticDataTypesResponse
-from models import EmbeddingRequest, SemanticSearchRequest, AdvancedSemanticSearchRequest, SimilarityRequest, SimilarityResponse
+from models import EmbeddingRequest, SemanticSearchRequest, AdvancedSemanticSearchRequest, SimilarityRequest, SimilarityResponse, ScanPatternRequest, ScanPatternResponse
 from models import EmbeddingResponse, SemanticSearchResponse, AdvancedSemanticSearchResponse, AllDocumentsResponse
 from models import SemanticDataType, SemanticDataTypeEmbeddingRequest, SemanticDataTypeEmbeddingResponse, SemanticSearchRequest, SemanticSearchResponse, AllSemanticDataTypesResponse
 from models import AnnotationRequest, AnnotationResponse, Entity
@@ -36,6 +36,7 @@ import uvloop
 from magika import Magika
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+from models import Match
 
 
 logger = logging.getLogger(__name__)
@@ -265,6 +266,33 @@ async def calculate_similarity_between_strings(request: SimilarityRequest, req: 
         
 @app.post("/semantic-search/basic")
 async def simple_semantic_search(request: SemanticSearchRequest, req: Request, token: str = None) -> SemanticSearchResponse:
+    """Performs semantic search against a corpus of text embeddings.
+    
+    Detailed steps:
+    1. Validates and preprocesses input query text
+    2. Rebuilds FAISS indexes from scratch (force_rebuild=True)
+    3. Gets FAISS index for requested model/pooling method combo
+    4. Calculates number of results to fetch (min of requested or total entries)
+    5. Generates embedding vector for input query text
+    6. Normalizes embedding vector using L2 normalization
+    7. Performs FAISS similarity search to get initial candidates
+    8. Filters candidates by:
+       - Matching corpus identifier
+       - Excluding exact query text matches
+       - Limiting to requested number of results
+    9. Returns results sorted by similarity score
+    
+    Args:
+        request (SemanticSearchRequest): Contains query text, model params, corpus info
+        req (Request): FastAPI request object for getting client IP
+        token (str, optional): Auth token if needed
+        
+    Returns:
+        SemanticSearchResponse: Query text, corpus info, and ranked similar results
+        
+    Raises:
+        HTTPException: If FAISS index not found or other errors occur
+    """
                               
     global faiss_indexes, associated_texts_by_model_and_pooling_method
     request_time = datetime.utcnow()
@@ -418,7 +446,7 @@ async def create_new_semantic_data_type(request: SemanticDataTypeEmbeddingReques
         
         
         # Generate embedding for description
-        embedding_request = EmbeddingRequest(text=request.semantic_data_type.description, llm_model_name=request.llm_model_name, embedding_pooling_method=request.embedding_pooling_method)
+        embedding_request = EmbeddingRequest(text=request.semantic_data_type.description, llm_model_name=request.llm_model_name, embedding_pooling_method=request.embedding_pooling_method, corpus_identifier_string=request.corpus_identifier_string)
         embedding_response = await get_or_compute_embedding(request=embedding_request, req=req, use_verbose=False)   
         description_embedding = embedding_response["text_embedding_dict"]["embedding_json"]
         embedding_vector = json.loads(description_embedding)
@@ -663,7 +691,7 @@ async def upload_and_process_documents(
                             document_file_hash=document_file_hash,
                             original_file_content=input_data_binary,
                         sentences=sentences,
-                        json_content=input_data_binary,
+                        json_content=json_content,
                         llm_model_name=llm_model_name,
                         embedding_pooling_method=embedding_pooling_method,
                         corpus_identifier_string=corpus_identifier_string,
@@ -840,6 +868,136 @@ async def delete_documents(
         logger.error(f"An error occurred while deleting documents: {str(e)}")
         raise HTTPException(status_code=500, detail=f"An error occurred while deleting documents: {str(e)}")
     
+
+@app.post("/semantic/scan/pattern", response_model=ScanPatternResponse)
+async def semantic_pattern_scan(
+    request: ScanPatternRequest,
+    req: Request = None,
+    token: str = None
+) -> ScanPatternResponse:
+    start_time = datetime.utcnow()
+    logger.info(f"Request received: {request.model_dump_json()}")
+    
+    try:
+        # Rebuild FAISS indexes
+        faiss_indexes, associated_texts_by_model_and_pooling_method = await build_faiss_indexes(force_rebuild=True)
+        
+        try:
+            faiss_index = faiss_indexes[(request.llm_model_name, request.embedding_pooling_method)]
+        except KeyError:
+            raise HTTPException(status_code=400, detail=f"No FAISS index found for model: {request.llm_model_name} and pooling method: {request.embedding_pooling_method}")
+
+        # Get associated texts and corpus identifiers
+        associated_texts = associated_texts_by_model_and_pooling_method[request.llm_model_name][request.embedding_pooling_method]
+        list_of_corpus_identifier_strings = await get_list_of_corpus_identifiers_from_list_of_embedding_texts(
+            associated_texts, 
+            request.llm_model_name, 
+            request.embedding_pooling_method
+        )
+
+        matches = []
+        total_sentences = 0
+
+        # Get document content from document corpus
+        async with AsyncSessionLocal() as session:
+            doc_query = select(Document).options(
+                joinedload(Document.document_embeddings)
+            ).filter(Document.corpus_identifier_string == request.document_corpus_id)
+            result = await session.execute(doc_query)
+            document = result.unique().scalar_one_or_none()
+            
+            if not document:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"No document found with corpus identifier: {request.document_corpus_id}"
+                )
+
+            logger.info(f"Found document: {document.filename}")
+
+            # Process each sentence in document
+            current_position = 0
+            for doc_embedding in document.document_embeddings:
+                if doc_embedding.sentences:
+                    sentences = json.loads(doc_embedding.sentences)
+                    total_sentences += len(sentences)
+                    
+                    for sentence in sentences:
+                        if not sentence.strip():
+                            continue
+                            
+                        # Get embedding for current sentence
+                        embedding_request = EmbeddingRequest(
+                            text=sentence,
+                            llm_model_name=request.llm_model_name,
+                            embedding_pooling_method=request.embedding_pooling_method,
+                            corpus_identifier_string=request.pattern_corpus_id
+                        )
+                        
+                        try:
+                            embedding_response = await get_or_compute_embedding(
+                                request=embedding_request,
+                                req=req,
+                                client_ip=None,
+                                use_verbose=False
+                            )
+                            
+                            if not embedding_response or "text_embedding_dict" not in embedding_response:
+                                logger.warning(f"No valid embedding response for sentence: {sentence[:50]}...")
+                                continue
+                                
+                            embedding_vector = json.loads(embedding_response["text_embedding_dict"]["embedding_json"])
+                            input_embedding = np.array(embedding_vector).astype('float32').reshape(1, -1)
+                            faiss.normalize_L2(input_embedding)
+
+                            # Search FAISS index
+                            similarities, indices = faiss_index.search(input_embedding, 25)
+
+                            # Process results
+                            for ii in range(len(indices[0])):
+                                index = indices[0][ii]
+                                if index < len(associated_texts):
+                                    similarity = float(similarities[0][ii])
+                                    pattern_text = associated_texts[index]
+                                    corpus_id = list_of_corpus_identifier_strings[index]
+                                    
+                                    if (corpus_id == request.pattern_corpus_id and 
+                                        similarity >= request.similarity_threshold):
+                                        matches.append(Match(
+                                            text=sentence,
+                                            start=current_position,
+                                            end=current_position + len(sentence),
+                                            match_type=request.operation,
+                                            confidence_score=similarity,
+                                            semantic_type=pattern_text,
+                                            document_id=document.id,
+                                            filename=document.filename
+                                        ))
+                                        break
+
+                        except Exception as e:
+                            logger.error(f"Error processing sentence: {str(e)}")
+                            continue
+
+                        current_position += len(sentence) + 1
+
+        processing_time = (datetime.utcnow() - start_time).total_seconds()
+
+        return ScanPatternResponse(
+            operation=request.operation,
+            document_corpus_id=request.document_corpus_id,
+            pattern_corpus_id=request.pattern_corpus_id,
+            matches=matches,
+            total_matches=len(matches),
+            total_sentences_scanned=total_sentences,
+            processing_time=processing_time
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in pattern scanning: {e}")
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail="An error occurred while scanning the document")
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8089)
